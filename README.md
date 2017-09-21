@@ -131,12 +131,12 @@ popup.closePopup();
 
 <br/>&rarr; Set cancel button icon color :
 ```
-popup.setAcceptColor(int color);
+popup.setCancelColor(int color);
 ```
 
 <br/>&rarr; Set cancel button background color :
 ```
-popup.setAcceptBackgroundColor(int colorNotPressed, int colorPressed);
+popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
 
 ## <br/>PopupBoolean usage
