@@ -110,6 +110,12 @@ popup.setPopupOutline(int width, int color);
 ```
 > Default width set on _2_
 
+<br/>&rarr; Set Popup corner radius :
+```
+popup.setPopupCornerRadius(int radius);
+```
+> Default width set on _20_
+
 <br/>&rarr; Display Popup :
 ```
 popup.display();
