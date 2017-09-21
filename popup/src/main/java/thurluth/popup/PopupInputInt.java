@@ -168,19 +168,15 @@ public class PopupInputInt extends Popup {
         cancelButton.setColorFilter(color);
     }
 
-    public void setCancelBackgroundColor(int color) {
+    public void setCancelBackgroundColor(int colorNotPressed, int colorPressed) {
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
         int[][] states = new int[][] {
-                new int[] { android.R.attr.state_enabled}, // enabled
-                new int[] {-android.R.attr.state_enabled}, // disabled
-                new int[] {-android.R.attr.state_checked}, // unchecked
-                new int[] { android.R.attr.state_pressed}  // pressed
+                new int[] { -android.R.attr.state_pressed }, // not pressed
+                new int[] { android.R.attr.state_pressed }  // pressed
         };
         int[] colors = new int[] {
-                color,
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                colorNotPressed,
+                colorPressed
         };
         ColorStateList background = new ColorStateList(states, colors);
         cancelButton.setBackgroundTintList(background);
