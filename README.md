@@ -1,4 +1,4 @@
-# Popups-Android
+# Popups-Android [![](https://jitpack.io/v/Thurluth/Popups-Android.svg)](https://jitpack.io/#Thurluth/Popups-Android)
 
 Popups allows you to display some popups with simple lines of code
 <br/>
@@ -44,6 +44,20 @@ This Popup display a text and an EditText where you can enter text.
 <br/>
 
 # USAGE
+
+## How to install it ?
+
+Add this line in your root build.gradle at the end of repositories:
+
+```
+maven { url 'https://jitpack.io' }
+```
+
+And add the dependency in your app build.gradle :
+
+```
+compile 'com.github.Thurluth:Popups-Android:1.0.2'
+```
 
 ## General usage
 
