@@ -45,7 +45,7 @@ This Popup display a text and an EditText where you can enter text.
 
 # USAGE
 
-## How to install it ?
+## How to use it in your project ?
 
 Add this line in your root build.gradle at the end of repositories:
 
