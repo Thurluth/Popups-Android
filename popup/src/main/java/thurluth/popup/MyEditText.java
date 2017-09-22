@@ -36,6 +36,10 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
         return focusNothing;
     }
 
+    public void setPrefix(final String prefix) {
+        mPrefix = prefix;
+    }
+
     public MyEditText(final Context context) {
         super(context);
         mPrefix = "";
