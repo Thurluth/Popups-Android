@@ -43,6 +43,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     public MyEditText(final Context context) {
         super(context);
         mPrefix = "";
+        createFocusNothing(context);
         this.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -55,7 +56,6 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
                 return false;
             }
         });
-        createFocusNothing(context);
     }
 
     public MyEditText(final Context context, AttributeSet attributeSet) {

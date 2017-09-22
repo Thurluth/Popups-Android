@@ -56,7 +56,7 @@ maven { url 'https://jitpack.io' }
 And add the dependency in your app build.gradle :
 
 ```
-compile 'com.github.Thurluth:Popups-Android:1.1.1'
+compile 'com.github.Thurluth:Popups-Android:1.1.2'
 ```
 
 ## General usage
