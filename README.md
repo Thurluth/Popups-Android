@@ -68,7 +68,7 @@ PopupType popup = new PopupType(RelativeLayout activityLayout, Display display);
  
 <br/>&rarr; Set Popup message text :
 ```
-popup.setMessageText(String test);
+popup.setMessageText(String text);
 ```
 > Set on _Text_ by default
 
@@ -83,6 +83,47 @@ popup.setMessageTextSize(int size);
 ```
 > Set on _20_ by default
 
+<br/>&rarr; Set Popup background color :
+```
+popup.setPopupBackgroundColor(int color);
+```
+
+<br/>&rarr; Set Popup outline width :
+```
+popup.setPopupOutlineWidth(int width);
+```
+> Set on _2_ by default
+
+<br/>&rarr; Set Popup outline color :
+```
+popup.setPopupOutlineColor(int color);
+```
+
+<br/>&rarr; Set Popup outline :
+```
+popup.setPopupOutline(int width, int color);
+```
+> Default width set on _2_
+
+<br/>&rarr; Set Popup corner radius :
+```
+popup.setPopupCornerRadius(int radius);
+```
+> Set on _20_ by default
+
+<br/>&rarr; Display Popup :
+```
+popup.display();
+```
+
+<br/>&rarr; Close Popup :
+```
+popup.closePopup();
+```
+> **When you change a listener, you have to call this method if you want to close the popup**
+
+## <br/>Popups having an accept button usage
+
 <br/>&rarr; Set accept button action when clicked :
 ```
 popup.setAcceptListener(onClickListener listener);
@@ -94,38 +135,20 @@ popup.setAcceptListener(onClickListener listener);
 popup.setAcceptColor(int color);
 ```
 
+<br/>&rarr; Set accept button background color when not pressed :
+```
+popup.setAcceptBackgroundColorNotPressed(int colorNotPressed);
+```
+
+<br/>&rarr; Set accept button background color when pressed :
+```
+popup.setAcceptBackgroundColorPressed(int colorPressed);
+```
+
 <br/>&rarr; Set accept button background color :
 ```
 popup.setAcceptBackgroundColor(int colorNotPressed, int colorPressed);
 ```
-
-<br/>&rarr; Set Popup background color :
-```
-popup.setPopupBackgroundColor(int color);
-```
-
-<br/>&rarr; Set Popup outline width and color :
-```
-popup.setPopupOutline(int width, int color);
-```
-> Default width set on _2_
-
-<br/>&rarr; Set Popup corner radius :
-```
-popup.setPopupCornerRadius(int radius);
-```
-> Default width set on _20_
-
-<br/>&rarr; Display Popup :
-```
-popup.display();
-```
-
-<br/>&rarr; Close Popup :
-```
-popup.closePopup();
-```
-> When you change a listener, you have to call this method if you want to close the popup
 
 ## <br/>Popups having a cancel button usage
 
@@ -134,16 +157,19 @@ popup.closePopup();
 popup.setCancelColor(int color);
 ```
 
+<br/>&rarr; Set cancel button background color when not pressed :
+```
+popup.setCancelBackgroundColorNotPressed(int colorNotPressed);
+```
+
+<br/>&rarr; Set cancel button background color when pressed :
+```
+popup.setCancelBackgroundColorPressed(int colorPressed);
+```
+
 <br/>&rarr; Set cancel button background color :
 ```
 popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
-```
-
-## <br/>PopupBoolean usage
-
-<br/>&rarr; Set refuse button action when clicked :
-```
-popup.setRefuseListener(onClickListener listener);
 ```
 > Close popup by default
 

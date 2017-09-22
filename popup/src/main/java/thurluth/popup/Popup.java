@@ -1,13 +1,12 @@
 package thurluth.popup;
 
-import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -18,35 +17,21 @@ abstract class Popup {
     RelativeLayout generalLayout;
     LinearLayout messageLayout;
 
+    int acceptColor = Color.WHITE;
+    int acceptColorNotPressed = Color.parseColor("#60C5FF");
+    int acceptColorPressed = Color.parseColor("#FF51A6D7");
+    int refuseColor = Color.WHITE;
+    int refuseColorNotPressed = Color.parseColor("#FF4141");
+    int refuseColorPressed = Color.parseColor("#FFDE3939");
+
+    int popupOutlineWidth = 2;
+    int popupOutlineColor = Color.parseColor("#34000000");
+
     int pxToDp(int px, DisplayMetrics displayMetrics) {
         float res;
 
         res = px * displayMetrics.density;
         return (int)res;
-    }
-
-    public void setAcceptListener(View.OnClickListener listener) {
-        ImageButton accept = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        accept.setOnClickListener(listener);
-    }
-
-    public void setAcceptColor(int color) {
-        ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        acceptButton.setColorFilter(color);
-    }
-
-    public void setAcceptBackgroundColor(int colorNotPressed, int colorPressed) {
-        ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
-        };
-        int[] colors = new int[] {
-                colorNotPressed,
-                colorPressed
-        };
-        ColorStateList background = new ColorStateList(states, colors);
-        acceptButton.setBackgroundTintList(background);
     }
 
     public void setPopupBackgroundColor(int color) {
@@ -59,9 +44,23 @@ abstract class Popup {
         prevBackground.setCornerRadius(radius);
     }
 
-    public void setPopupOutline(int width, int color) {
+    public void setPopupOutlineWidth(int width) {
+        popupOutlineWidth = width;
         GradientDrawable prevBackground = (GradientDrawable) messageLayout.getBackground();
-        prevBackground.setStroke(width, color);
+        prevBackground.setStroke(popupOutlineWidth, popupOutlineColor);
+    }
+
+    public void setPopupOutlineColor(int color) {
+        popupOutlineColor = color;
+        GradientDrawable prevBackground = (GradientDrawable) messageLayout.getBackground();
+        prevBackground.setStroke(popupOutlineWidth, popupOutlineColor);
+    }
+
+    public void setPopupOutline(int width, int color) {
+        popupOutlineWidth = width;
+        popupOutlineColor = color;
+        GradientDrawable prevBackground = (GradientDrawable) messageLayout.getBackground();
+        prevBackground.setStroke(popupOutlineWidth, popupOutlineColor);
     }
 
     public void setMessageText(CharSequence messageText) {
