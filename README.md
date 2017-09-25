@@ -50,13 +50,17 @@ This Popup display a text and an EditText where you can enter text.
 Add this line in your root build.gradle at the end of repositories:
 
 ```
-maven { url 'https://jitpack.io' }
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 ```
 
 And add the dependency in your app build.gradle :
 
 ```
-compile 'com.github.Thurluth:Popups-Android:1.2.0'
+dependencies {
+    compile 'com.github.Thurluth:Popups-Android:1.2.0'
+}
 ```
 
 ## General usage
