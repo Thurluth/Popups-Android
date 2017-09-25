@@ -198,7 +198,7 @@ lister = new PopupChoice.OnSelectedListener() {
 
 <br/>&rarr; Add choice :
 ```
-popup.addChoice(String text, onClickListener listener);
+popup.addChoice(String text);
 ```
 
 <br/>&rarr; When all choices added :
