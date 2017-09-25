@@ -181,7 +181,7 @@ PopupChoice popup = new PopupChoice(RelativeLayout activityLayout, Display displ
                                     int displayableChoices,
                                     OnSelectedListener listener);
 ```
-> _displayableChoices_ set on 3 if no value is entered or if the value is incorrect
+> _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)
 
 ```
 lister = new PopupChoice.OnSelectedListener() {
