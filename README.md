@@ -56,7 +56,7 @@ maven { url 'https://jitpack.io' }
 And add the dependency in your app build.gradle :
 
 ```
-compile 'com.github.Thurluth:Popups-Android:1.1.2'
+compile 'com.github.Thurluth:Popups-Android:1.2.0'
 ```
 
 ## General usage
@@ -174,6 +174,27 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 > Close popup by default
 
 ## <br/>PopupChoice usage
+
+<br/>&rarr; PopupChoice creation :
+```
+PopupChoice popup = new PopupChoice(RelativeLayout activityLayout, Display display,
+                                    int displayableChoices,
+                                    OnSelectedListener listener);
+```
+> _displayableChoices_ set on 3 if no value is entered or if the value is incorrect
+
+```
+lister = new PopupChoice.OnSelectedListener() {
+    @Override
+    public void onSelected(String choice) {
+        /*
+        *   HERE YOUR CODE THAT WILL
+        *   BE EXECUTED WHEN A CHOICE
+        *   HAS BEEN SELETED
+        */
+    }
+}
+ ```
 
 <br/>&rarr; Add choice :
 ```

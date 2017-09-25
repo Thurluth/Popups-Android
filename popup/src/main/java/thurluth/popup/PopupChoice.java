@@ -10,23 +10,38 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class PopupChoice extends Popup {
+public class PopupChoice extends Popup
+{
+
+    public interface OnSelectedListener
+    {
+        void onSelected(String choice);
+    }
+
+    private int displayableChoices = 3;
     private Context context;
+    private PopupChoice popup = this;
     private DisplayMetrics displayMetrics;
     private LinearLayout buttonLayout;
-    private LinearLayout choicesLayout;
+    private ScrollView choicesLayout;
+    private LinearLayout choicesContent;
+    private String value;
+    private final OnSelectedListener listener;
+    private Point screenSize = new Point();
 
-    private void createLayout(Display display) {
+    private void createLayout(Display display)
+    {
         int colorPopup = Color.parseColor("#f5f5f5");
         int popupOutlineColor = Color.parseColor("#34000000");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
-        Point screenSize = new Point();
 
         //          SET GENERAL POPUP LAYOUT
         RelativeLayout.LayoutParams generalLayoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -37,7 +52,7 @@ public class PopupChoice extends Popup {
 
         //          SET LAYOUT OF POPUP
         display.getSize(screenSize);
-        int popupWidth = (int)(screenSize.x * (70f / 100f));
+        int popupWidth = (int) (screenSize.x * (70f / 100f));
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(popupWidth,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         GradientDrawable popupBackground = new GradientDrawable();
@@ -54,12 +69,18 @@ public class PopupChoice extends Popup {
         //          SET LAYOUT OF CHOICES
         layoutParams = new LinearLayout.LayoutParams(popupWidth,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
+        choicesContent = new LinearLayout(context);
+        choicesContent.setOrientation(LinearLayout.VERTICAL);
+        choicesContent.setGravity(Gravity.CENTER);
+        choicesContent.setLayoutParams(layoutParams);
+        choicesLayout = new ScrollView(context);
+        int choiceHeight = 20 + pxToDp(5, displayMetrics) * 2 + pxToDp(10, displayMetrics) * 2;
+        layoutParams = new LinearLayout.LayoutParams(popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(pxToDp(10, displayMetrics), pxToDp(10, displayMetrics),
                 pxToDp(10, displayMetrics), pxToDp(10, displayMetrics));
-        choicesLayout = new LinearLayout(context);
-        choicesLayout.setOrientation(LinearLayout.VERTICAL);
-        choicesLayout.setGravity(Gravity.CENTER);
         choicesLayout.setLayoutParams(layoutParams);
+        choicesLayout.addView(choicesContent);
+
 
         //          SET MESSAGE TEXT VIEW
         final TextView message = new TextView(context);
@@ -81,13 +102,13 @@ public class PopupChoice extends Popup {
 
         //          SET CANCEL BUTTON
         int color = Color.parseColor("#ff4141");
-        int[][] states = new int[][] {
-                new int[] { android.R.attr.state_enabled}, // enabled
-                new int[] {-android.R.attr.state_enabled}, // disabled
-                new int[] {-android.R.attr.state_checked}, // unchecked
-                new int[] { android.R.attr.state_pressed}  // pressed
+        int[][] states = new int[][]{
+                new int[]{android.R.attr.state_enabled}, // enabled
+                new int[]{-android.R.attr.state_enabled}, // disabled
+                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 color,
                 Color.RED,
                 Color.GREEN,
@@ -112,37 +133,43 @@ public class PopupChoice extends Popup {
 
     //      CANCEL BUTTON SETTINGS
 
-    public void setCancelListener(View.OnClickListener listener) {
+    public void setCancelListener(View.OnClickListener listener)
+    {
         ImageButton refuse = (ImageButton) messageLayout.findViewWithTag("Cancel");
         refuse.setOnClickListener(listener);
     }
 
-    public int getCancelColor() {
+    public int getCancelColor()
+    {
         return (this.refuseColor);
     }
 
-    public void setCancelColor(int color) {
+    public void setCancelColor(int color)
+    {
         this.refuseColor = color;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
         cancelButton.setColorFilter(this.refuseColor);
     }
 
-    public int getCancelBackgroundColorNotPressed() {
+    public int getCancelBackgroundColorNotPressed()
+    {
         return this.refuseColorNotPressed;
     }
 
-    public int getCancelBackgroundColorPressed() {
+    public int getCancelBackgroundColorPressed()
+    {
         return this.refuseColorPressed;
     }
 
-    public void setCancelBackgroundColorNotPressed(int colorNotPressed) {
+    public void setCancelBackgroundColorNotPressed(int colorNotPressed)
+    {
         this.refuseColorPressed = colorNotPressed;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.refuseColorNotPressed,
                 this.refuseColorPressed
         };
@@ -150,14 +177,15 @@ public class PopupChoice extends Popup {
         cancelButton.setBackgroundTintList(background);
     }
 
-    public void setCancelBackgroundColorPressed(int colorPressed) {
+    public void setCancelBackgroundColorPressed(int colorPressed)
+    {
         this.refuseColorPressed = colorPressed;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.acceptColorNotPressed,
                 this.acceptColorPressed
         };
@@ -165,13 +193,14 @@ public class PopupChoice extends Popup {
         cancelButton.setBackgroundTintList(background);
     }
 
-    public void setCancelBackgroundColor(int colorNotPressed, int colorPressed) {
+    public void setCancelBackgroundColor(int colorNotPressed, int colorPressed)
+    {
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 colorNotPressed,
                 colorPressed
         };
@@ -181,7 +210,8 @@ public class PopupChoice extends Popup {
 
     //      CHOICES SETTINGS
 
-    public void addChoice(String text, View.OnClickListener listener) {
+    public void addChoice(String text)
+    {
         int colorChoiceSeparator = Color.parseColor("#34000000");
         final TextView choice = new TextView(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -193,42 +223,82 @@ public class PopupChoice extends Popup {
         choice.setTextSize(20);
         choice.setText(text);
         choice.setTag(text);
-        choice.setOnClickListener(listener);
+        choice.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                popup.closePopup();
+                value = view.getTag().toString();
+                popup.listener.onSelected(value);
+            }
+        });
 
-        if (choicesLayout.getChildCount() != 0) {
+        if (choicesContent.getChildCount() != 0)
+        {
             View v = new View(context);
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2);
             layoutParams.setMargins(pxToDp(50, displayMetrics), 0, pxToDp(50, displayMetrics), 0);
             v.setLayoutParams(layoutParams);
             v.setBackgroundColor(colorChoiceSeparator);
 
-            choicesLayout.addView(v);
+            choicesContent.addView(v);
+            if (choicesContent.getChildCount() > displayableChoices + 2)
+            {
+                int popupWidth = (int) (screenSize.x * (70f / 100f));
+                int choiceHeight = 20 + pxToDp(5, displayMetrics) * 2 + pxToDp(10, displayMetrics) * 2;
+                layoutParams = new LinearLayout.LayoutParams(popupWidth, displayableChoices * choiceHeight);
+                layoutParams.setMargins(pxToDp(10, displayMetrics), pxToDp(10, displayMetrics),
+                        pxToDp(10, displayMetrics), pxToDp(10, displayMetrics));
+                choicesLayout.setLayoutParams(layoutParams);
+            }
         }
 
-        choicesLayout.addView(choice);
+        choicesContent.addView(choice);
     }
 
-    public void endChoice() {
+    public void endChoice()
+    {
         messageLayout.addView(choicesLayout);
         messageLayout.addView(buttonLayout);
     }
 
-    public PopupChoice(@NonNull RelativeLayout _parentLayout, @NonNull Display display) {
+    public String getValue()
+    {
+        return value;
+    }
+
+    public PopupChoice(@NonNull RelativeLayout _parentLayout, @NonNull Display display, OnSelectedListener listener)
+    {
         super(_parentLayout);
+        this.listener = listener;
+        context = _parentLayout.getContext();
+        displayMetrics = context.getResources().getDisplayMetrics();
+        createLayout(display);
+    }
+
+    public PopupChoice(@NonNull RelativeLayout _parentLayout, @NonNull Display display, int displayableChoices, OnSelectedListener listener)
+    {
+        super(_parentLayout);
+        this.listener = listener;
+        if (displayableChoices > 0)
+            this.displayableChoices = displayableChoices;
         context = _parentLayout.getContext();
         displayMetrics = context.getResources().getDisplayMetrics();
         createLayout(display);
     }
 
     @Override
-    public void closePopup() {
+    public void closePopup()
+    {
         enableParentLayout(parentLayout);
         fadeOutAnimation();
         parentLayout.removeView(messageLayout);
     }
 
     @Override
-    public void display() {
+    public void display()
+    {
         parentLayout.addView(generalLayout);
         disableParentLayout(parentLayout);
         fadeInAnimation();
