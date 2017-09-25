@@ -4,6 +4,8 @@ Popups allows you to display some popups with simple lines of code
 <br/>
 _Minimum API : 23_
 
+You can dowload the APK in order to test the popus
+
 <br/>
 
 # Avaible Popups
