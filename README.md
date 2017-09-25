@@ -183,6 +183,9 @@ PopupChoice popup = new PopupChoice(RelativeLayout activityLayout, Display displ
 ```
 > _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)
 
+> this is the number of choices that can be displayed at once, when this number is passed,
+choices are scrollable.
+
 ```
 lister = new PopupChoice.OnSelectedListener() {
     @Override
