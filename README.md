@@ -181,9 +181,8 @@ PopupChoice popup = new PopupChoice(RelativeLayout activityLayout, Display displ
                                     int displayableChoices,
                                     OnSelectedListener listener);
 ```
-> _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)
-
-> this is the number of choices that can be displayed at once, when this number is passed,
+> _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)<br/>
+This is the number of choices that can be displayed at once, when this number is passed,
 choices are scrollable.
 
 ```
