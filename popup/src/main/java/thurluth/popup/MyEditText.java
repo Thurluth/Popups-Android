@@ -57,7 +57,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         this.toFocusNothing = focus;
     }
 
-    private void setCursorColor(@ColorInt int color)
+    public void setCursorColor(@ColorInt int color)
     {
         try
         {
