@@ -24,6 +24,8 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
     int viewPartRef;
     LinearLayout focusNothing;
 
+    private boolean toFocusNothing = true;
+
     private String mPrefix;
     private Rect mPrefixRect = new Rect();
 
@@ -42,6 +44,11 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
     public void setPrefix(final String prefix)
     {
         mPrefix = prefix;
+    }
+
+    public void setToFocusNothing(boolean focus)
+    {
+        this.toFocusNothing = focus;
     }
 
     public MyEditText(final Context context)
@@ -135,7 +142,8 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             parentLayout = (ViewGroup) ((View) this.getParent()).findViewById(viewPartRef);
             if (parentLayout != null)
                 parentLayout.addView(focusNothing);
-            focusNothing.requestFocus();
+            if (toFocusNothing)
+                focusNothing.requestFocus();
         }
     }
 }
