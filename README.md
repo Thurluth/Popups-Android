@@ -4,6 +4,8 @@ Popups allows you to display some popups with simple lines of code
 <br/>
 _Minimum API : 23_
 
+You can dowload the APK in order to test the popups
+
 <br/>
 
 # Avaible Popups
@@ -50,13 +52,17 @@ This Popup display a text and an EditText where you can enter text.
 Add this line in your root build.gradle at the end of repositories:
 
 ```
-maven { url 'https://jitpack.io' }
+repositories {
+    maven { url 'https://jitpack.io' }
+}
 ```
 
 And add the dependency in your app build.gradle :
 
 ```
-compile 'com.github.Thurluth:Popups-Android:1.2.0'
+dependencies {
+    compile 'com.github.Thurluth:Popups-Android:1.2.0'
+}
 ```
 
 ## General usage
