@@ -17,7 +17,8 @@ import android.widget.TextView;
  * Created by Nathan on 08/09/2017.
  **/
 
-public class MyEditText extends android.support.v7.widget.AppCompatEditText {
+public class MyEditText extends android.support.v7.widget.AppCompatEditText
+{
 
     ViewGroup parentLayout;
     int viewPartRef;
@@ -26,29 +27,36 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     private String mPrefix;
     private Rect mPrefixRect = new Rect();
 
-    private void createFocusNothing(Context context) {
+    private void createFocusNothing(Context context)
+    {
         focusNothing = new LinearLayout(context);
         focusNothing.setFocusable(true);
         focusNothing.setFocusableInTouchMode(true);
     }
 
-    public LinearLayout getFocusNothing() {
+    public LinearLayout getFocusNothing()
+    {
         return focusNothing;
     }
 
-    public void setPrefix(final String prefix) {
+    public void setPrefix(final String prefix)
+    {
         mPrefix = prefix;
     }
 
-    public MyEditText(final Context context) {
+    public MyEditText(final Context context)
+    {
         super(context);
         mPrefix = "";
         createFocusNothing(context);
-        this.setOnEditorActionListener(new OnEditorActionListener() {
+        this.setOnEditorActionListener(new OnEditorActionListener()
+        {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
                 if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                        || (i == EditorInfo.IME_ACTION_DONE)) {
+                        || (i == EditorInfo.IME_ACTION_DONE))
+                {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
@@ -58,7 +66,8 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
         });
     }
 
-    public MyEditText(final Context context, AttributeSet attributeSet) {
+    public MyEditText(final Context context, AttributeSet attributeSet)
+    {
         super(context, attributeSet);
         createFocusNothing(context);
         TypedArray a = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.MyEditText, 0, 0);
@@ -66,11 +75,14 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
         viewPartRef = a.getResourceId(R.styleable.MyEditText_parentLayout, -1);
         if (mPrefix == null)
             mPrefix = "";
-        this.setOnEditorActionListener(new OnEditorActionListener() {
+        this.setOnEditorActionListener(new OnEditorActionListener()
+        {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
                 if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                        || (i == EditorInfo.IME_ACTION_DONE)) {
+                        || (i == EditorInfo.IME_ACTION_DONE))
+                {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
@@ -82,8 +94,10 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     }
 
     @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+    public boolean onKeyPreIme(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
+        {
             focusNothing.requestFocus();
             return false;
         }
@@ -91,27 +105,33 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
         getPaint().getTextBounds(mPrefix, 0, mPrefix.length(), mPrefixRect);
-        mPrefixRect.right += getPaint().measureText("  "); // add some offset
+        if (!mPrefix.matches(""))
+            mPrefixRect.right += getPaint().measureText("  "); // add some offset
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas)
+    {
         super.onDraw(canvas);
         canvas.drawText(mPrefix, super.getCompoundPaddingLeft(), getBaseline(), getPaint());
     }
 
     @Override
-    public int getCompoundPaddingLeft() {
+    public int getCompoundPaddingLeft()
+    {
         return super.getCompoundPaddingLeft() + mPrefixRect.width();
     }
 
     @Override
-    protected void onAttachedToWindow() {
+    protected void onAttachedToWindow()
+    {
         super.onAttachedToWindow();
-        if (viewPartRef != -1) {
+        if (viewPartRef != -1)
+        {
             parentLayout = (ViewGroup) ((View) this.getParent()).findViewById(viewPartRef);
             if (parentLayout != null)
                 parentLayout.addView(focusNothing);

@@ -9,22 +9,27 @@ import android.view.MotionEvent;
  * Created by Nathan on 14/09/2017.
  **/
 
-public class MyViewPager extends ViewPager {
+public class MyViewPager extends ViewPager
+{
     private boolean pageable;
 
-    public MyViewPager(Context context) {
+    public MyViewPager(Context context)
+    {
         super(context);
         pageable = true;
     }
 
-    public MyViewPager(Context context, AttributeSet attrs) {
+    public MyViewPager(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
         pageable = true;
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (this.pageable) {
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        if (this.pageable)
+        {
             return super.onTouchEvent(event);
         }
 
@@ -32,12 +37,14 @@ public class MyViewPager extends ViewPager {
     }
 
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
+    public boolean onInterceptTouchEvent(MotionEvent event)
+    {
         return this.pageable && super.onInterceptTouchEvent(event);
 
     }
 
-    public void setPageable(boolean pageable) {
+    public void setPageable(boolean pageable)
+    {
         this.pageable = pageable;
     }
 

@@ -15,9 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PopupBoolean extends Popup {
+public class PopupBoolean extends Popup
+{
 
-    private void createLayout(Context context, Display display, DisplayMetrics displayMetrics) {
+    private void createLayout(Context context, Display display, DisplayMetrics displayMetrics)
+    {
         int colorPopup = Color.parseColor("#f5f5f5");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
@@ -32,7 +34,7 @@ public class PopupBoolean extends Popup {
 
         //          SET LAYOUT OF POPUP
         display.getSize(screenSize);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int)(screenSize.x * (70f / 100f)),
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams((int) (screenSize.x * (70f / 100f)),
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         GradientDrawable popupBackground = new GradientDrawable();
         popupBackground.setColor(colorPopup);
@@ -62,11 +64,11 @@ public class PopupBoolean extends Popup {
         buttonLayout.setGravity(Gravity.CENTER);
 
         //          SET ACCEPT BUTTON
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed}, // not pressed
-                new int[] { android.R.attr.state_pressed}  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 acceptColorNotPressed,
                 acceptColorPressed
         };
@@ -84,11 +86,11 @@ public class PopupBoolean extends Popup {
         buttonLayout.addView(acceptButton);
 
         //          SET CANCEL BUTTON
-        states = new int[][] {
-                new int[] { -android.R.attr.state_pressed}, // not pressed
-                new int[] { android.R.attr.state_pressed}  // pressed
+        states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        colors = new int[] {
+        colors = new int[]{
                 refuseColorNotPressed,
                 refuseColorPressed
         };
@@ -112,37 +114,43 @@ public class PopupBoolean extends Popup {
 
     //      ACCEPT BUTTON SETTINGS
 
-    public void setAcceptListener(View.OnClickListener listener) {
+    public void setAcceptListener(View.OnClickListener listener)
+    {
         ImageButton accept = (ImageButton) messageLayout.findViewWithTag("Confirm");
         accept.setOnClickListener(listener);
     }
 
-    public int getAcceptColor() {
+    public int getAcceptColor()
+    {
         return (this.acceptColor);
     }
 
-    public void setAcceptColor(int color) {
+    public void setAcceptColor(int color)
+    {
         this.acceptColor = color;
         ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
         acceptButton.setColorFilter(this.acceptColor);
     }
 
-    public int getAcceptBackgroundColorNotPressed() {
+    public int getAcceptBackgroundColorNotPressed()
+    {
         return this.acceptColorNotPressed;
     }
 
-    public int getAcceptBackgroundColorPressed() {
+    public int getAcceptBackgroundColorPressed()
+    {
         return this.acceptColorPressed;
     }
 
-    public void setAcceptBackgroundColorNotPressed(int colorNotPressed) {
+    public void setAcceptBackgroundColorNotPressed(int colorNotPressed)
+    {
         this.acceptColorNotPressed = colorNotPressed;
         ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.acceptColorNotPressed,
                 this.acceptColorPressed
         };
@@ -150,14 +158,15 @@ public class PopupBoolean extends Popup {
         acceptButton.setBackgroundTintList(background);
     }
 
-    public void setAcceptBackgroundColorPressed(int colorPressed) {
+    public void setAcceptBackgroundColorPressed(int colorPressed)
+    {
         this.acceptColorPressed = colorPressed;
         ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.acceptColorNotPressed,
                 this.acceptColorPressed
         };
@@ -165,15 +174,16 @@ public class PopupBoolean extends Popup {
         acceptButton.setBackgroundTintList(background);
     }
 
-    public void setAcceptBackgroundColor(int colorNotPressed, int colorPressed) {
+    public void setAcceptBackgroundColor(int colorNotPressed, int colorPressed)
+    {
         this.acceptColorNotPressed = colorNotPressed;
         this.acceptColorPressed = colorPressed;
         ImageButton acceptButton = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.acceptColorNotPressed,
                 this.acceptColorPressed
         };
@@ -183,37 +193,43 @@ public class PopupBoolean extends Popup {
 
     //      CANCEL BUTTON SETTINGS
 
-    public void setCancelListener(View.OnClickListener listener) {
+    public void setCancelListener(View.OnClickListener listener)
+    {
         ImageButton refuse = (ImageButton) messageLayout.findViewWithTag("Cancel");
         refuse.setOnClickListener(listener);
     }
 
-    public int getCancelColor() {
+    public int getCancelColor()
+    {
         return (this.refuseColor);
     }
 
-    public void setCancelColor(int color) {
+    public void setCancelColor(int color)
+    {
         this.refuseColor = color;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
         cancelButton.setColorFilter(this.refuseColor);
     }
 
-    public int getCancelBackgroundColorNotPressed() {
+    public int getCancelBackgroundColorNotPressed()
+    {
         return this.refuseColorNotPressed;
     }
 
-    public int getCancelBackgroundColorPressed() {
+    public int getCancelBackgroundColorPressed()
+    {
         return this.refuseColorPressed;
     }
 
-    public void setCancelBackgroundColorNotPressed(int colorNotPressed) {
+    public void setCancelBackgroundColorNotPressed(int colorNotPressed)
+    {
         this.refuseColorPressed = colorNotPressed;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.refuseColorNotPressed,
                 this.refuseColorPressed
         };
@@ -221,14 +237,15 @@ public class PopupBoolean extends Popup {
         cancelButton.setBackgroundTintList(background);
     }
 
-    public void setCancelBackgroundColorPressed(int colorPressed) {
+    public void setCancelBackgroundColorPressed(int colorPressed)
+    {
         this.refuseColorPressed = colorPressed;
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 this.acceptColorNotPressed,
                 this.acceptColorPressed
         };
@@ -236,13 +253,14 @@ public class PopupBoolean extends Popup {
         cancelButton.setBackgroundTintList(background);
     }
 
-    public void setCancelBackgroundColor(int colorNotPressed, int colorPressed) {
+    public void setCancelBackgroundColor(int colorNotPressed, int colorPressed)
+    {
         ImageButton cancelButton = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        int[][] states = new int[][] {
-                new int[] { -android.R.attr.state_pressed }, // not pressed
-                new int[] { android.R.attr.state_pressed }  // pressed
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{android.R.attr.state_pressed}  // pressed
         };
-        int[] colors = new int[] {
+        int[] colors = new int[]{
                 colorNotPressed,
                 colorPressed
         };
@@ -250,7 +268,8 @@ public class PopupBoolean extends Popup {
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupBoolean(@NonNull RelativeLayout _parentLayout, @NonNull Display display) {
+    public PopupBoolean(@NonNull RelativeLayout _parentLayout, @NonNull Display display)
+    {
         super(_parentLayout);
         Context context = _parentLayout.getContext();
         createLayout(context, display, context.getResources().getDisplayMetrics());
