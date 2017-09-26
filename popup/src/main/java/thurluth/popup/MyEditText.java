@@ -3,7 +3,11 @@ package thurluth.popup;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,6 +16,8 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by Nathan on 08/09/2017.
@@ -51,6 +57,84 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         this.toFocusNothing = focus;
     }
 
+    private void setCursorColor(@ColorInt int color)
+    {
+        try
+        {
+            // Get the cursor resource id
+            Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
+            field.setAccessible(true);
+            int drawableResId = field.getInt(this);
+
+            // Get the editor
+            field = TextView.class.getDeclaredField("mEditor");
+            field.setAccessible(true);
+            Object editor = field.get(this);
+
+            // Get the drawable and set a color filter
+            Drawable drawable = ContextCompat.getDrawable(getContext(), drawableResId);
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            Drawable[] drawables = {drawable, drawable};
+
+            // Set the drawables
+            field = editor.getClass().getDeclaredField("mCursorDrawable");
+            field.setAccessible(true);
+            field.set(editor, drawables);
+        } catch (Exception ignored)
+        {
+        }
+    }
+
+    public void colorHandles(int color)
+    {
+        try
+        {
+            Field editorField = TextView.class.getDeclaredField("mEditor");
+            if (!editorField.isAccessible())
+            {
+                editorField.setAccessible(true);
+            }
+
+            Object editor = editorField.get(this);
+            Class<?> editorClass = editor.getClass();
+
+            String[] handleNames = {"mSelectHandleLeft", "mSelectHandleRight", "mSelectHandleCenter"};
+            String[] resNames = {"mTextSelectHandleLeftRes", "mTextSelectHandleRightRes", "mTextSelectHandleRes"};
+
+            for (int i = 0; i < handleNames.length; i++)
+            {
+                Field handleField = editorClass.getDeclaredField(handleNames[i]);
+                if (!handleField.isAccessible())
+                {
+                    handleField.setAccessible(true);
+                }
+
+                Drawable handleDrawable = (Drawable) handleField.get(editor);
+
+                if (handleDrawable == null)
+                {
+                    Field resField = TextView.class.getDeclaredField(resNames[i]);
+                    if (!resField.isAccessible())
+                    {
+                        resField.setAccessible(true);
+                    }
+                    int resId = resField.getInt(this);
+                    handleDrawable = this.getResources().getDrawable(resId, null);
+                }
+
+                if (handleDrawable != null)
+                {
+                    Drawable drawable = handleDrawable.mutate();
+                    drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+                    handleField.set(editor, drawable);
+                }
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public MyEditText(final Context context)
     {
         super(context);
@@ -61,8 +145,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
-                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                        || (i == EditorInfo.IME_ACTION_DONE))
+                if (keyEvent != null && i == EditorInfo.IME_ACTION_DONE)
                 {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -87,8 +170,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
-                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                        || (i == EditorInfo.IME_ACTION_DONE))
+                if (keyEvent != null && i == EditorInfo.IME_ACTION_DONE)
                 {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
