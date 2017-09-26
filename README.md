@@ -61,7 +61,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.3.1'
+    compile 'com.github.Thurluth:Popups-Android:1.3.2'
 }
 ```
 

@@ -85,7 +85,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         }
     }
 
-    public void colorHandles(int color)
+    public void setHandlesColors(int color)
     {
         try
         {
