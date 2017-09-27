@@ -107,19 +107,28 @@ abstract class Popup
             child.setEnabled(false);
             try
             {
-                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
-                if (layout.getTag() != "Popup Tag")
-                    disableParentLayout(layout);
-            } catch (Exception e)
-            {
                 try
                 {
                     MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
                     layout.setPageable(false);
-                    disableParentLayout(layout);
-                } catch (Exception ignored)
+                }
+                catch (Exception ignored)
                 {
                 }
+                try
+                {
+                    MyScrollView layout = (MyScrollView) parentLayout.getChildAt(i);
+                    layout.setScrollable(false);
+                }
+                catch (Exception ignored)
+                {
+                }
+                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
+                if (layout.getTag() != "Popup Tag")
+                    disableParentLayout(layout);
+            }
+            catch (Exception ignored)
+            {
             }
         }
     }
@@ -132,18 +141,27 @@ abstract class Popup
             child.setEnabled(true);
             try
             {
-                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
-                enableParentLayout(layout);
-            } catch (Exception e)
-            {
                 try
                 {
                     MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
                     layout.setPageable(true);
-                    enableParentLayout(layout);
-                } catch (Exception ignored)
+                }
+                catch (Exception ignored)
                 {
                 }
+                try
+                {
+                    MyScrollView layout = (MyScrollView) parentLayout.getChildAt(i);
+                    layout.setScrollable(true);
+                }
+                catch (Exception ignored)
+                {
+                }
+                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
+                enableParentLayout(layout);
+            }
+            catch (Exception ignored)
+            {
             }
         }
     }
