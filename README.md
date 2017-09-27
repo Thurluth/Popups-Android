@@ -6,6 +6,8 @@ _Minimum API : 23_
 
 You can dowload the APK in order to test the popups
 
+You also have custom _ScrollView_ / _EditText_ / _ViewPager_ in the library
+
 <br/>
 
 # Avaible Popups
