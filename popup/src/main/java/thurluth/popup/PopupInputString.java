@@ -332,19 +332,17 @@ public class PopupInputString extends Popup
     @Override
     public void closePopup()
     {
+        super.closePopup();
         MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
         input.setEnabled(false);
-        enableParentLayout(parentLayout);
-        fadeOutAnimation();
-        parentLayout.removeView(messageLayout);
     }
 
     @Override
     public void display()
     {
-        parentLayout.addView(generalLayout);
-        disableParentLayout(parentLayout);
-        fadeInAnimation();
+        super.display();
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
+        input.setEnabled(true);
     }
 
     public String getValue()

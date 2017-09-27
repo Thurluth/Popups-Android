@@ -36,10 +36,11 @@ abstract class Popup
         return (int) res;
     }
 
-    public void setPopupBackgroundColor(int color)
+    public Popup setPopupBackgroundColor(int color)
     {
         GradientDrawable prevBackground = (GradientDrawable) messageLayout.getBackground();
         prevBackground.setColor(color);
+        return this;
     }
 
     public void setPopupCornerRadius(int radius)
@@ -170,25 +171,6 @@ abstract class Popup
     {
         Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
         fadeOut.setDuration(300);
-        fadeOut.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override
-            public void onAnimationStart(Animation animation)
-            {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                generalLayout.setVisibility(View.GONE);
-                generalLayout.setAlpha(0.0f);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation)
-            {
-            }
-        });
         generalLayout.startAnimation(fadeOut);
     }
 
@@ -196,40 +178,21 @@ abstract class Popup
     {
         Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
         fadeIn.setDuration(300);
-        fadeIn.setAnimationListener(new Animation.AnimationListener()
-        {
-            @Override
-            public void onAnimationStart(Animation animation)
-            {
-                generalLayout.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation)
-            {
-                generalLayout.setAlpha(1.0f);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation)
-            {
-            }
-        });
         generalLayout.startAnimation(fadeIn);
     }
 
     public void display()
     {
         parentLayout.addView(generalLayout);
-        disableParentLayout(parentLayout);
         fadeInAnimation();
+        disableParentLayout(parentLayout);
     }
 
     public void closePopup()
     {
         enableParentLayout(parentLayout);
         fadeOutAnimation();
-        parentLayout.removeView(messageLayout);
+        parentLayout.removeView(generalLayout);
     }
 
     View.OnClickListener defaultListener = new View.OnClickListener()

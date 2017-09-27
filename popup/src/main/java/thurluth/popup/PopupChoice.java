@@ -214,7 +214,7 @@ public class PopupChoice extends Popup
 
     //      CHOICES SETTINGS
 
-    public void addChoice(String text)
+    private void addChoice(String text)
     {
         int colorChoiceSeparator = Color.parseColor("#34000000");
         final TextView choice = new TextView(context);
@@ -261,7 +261,7 @@ public class PopupChoice extends Popup
         choicesContent.addView(choice);
     }
 
-    public void endChoice()
+    private void endChoice()
     {
         messageLayout.addView(choicesLayout);
         messageLayout.addView(buttonLayout);
@@ -281,21 +281,5 @@ public class PopupChoice extends Popup
         for (String choice : choicesList)
             this.addChoice(choice);
         endChoice();
-    }
-
-    @Override
-    public void closePopup()
-    {
-        enableParentLayout(parentLayout);
-        fadeOutAnimation();
-        parentLayout.removeView(messageLayout);
-    }
-
-    @Override
-    public void display()
-    {
-        parentLayout.addView(generalLayout);
-        disableParentLayout(parentLayout);
-        fadeInAnimation();
     }
 }
