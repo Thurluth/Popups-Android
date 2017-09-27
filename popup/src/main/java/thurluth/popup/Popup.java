@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -105,15 +104,22 @@ abstract class Popup
         for (int i = 0; i < parentLayout.getChildCount(); i++)
         {
             View child = parentLayout.getChildAt(i);
-            Log.d("Popups", "CHILD N°" + i + " is a " + child.getClass());
             child.setEnabled(false);
             try
             {
                 ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
                 if (layout.getTag() != "Popup Tag")
                     disableParentLayout(layout);
-            } catch (Exception ignored)
+            } catch (Exception e)
             {
+                try
+                {
+                    MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
+                    layout.setPageable(false);
+                    disableParentLayout(layout);
+                } catch (Exception ignored)
+                {
+                }
             }
         }
     }
@@ -128,8 +134,16 @@ abstract class Popup
             {
                 ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
                 enableParentLayout(layout);
-            } catch (Exception ignored)
+            } catch (Exception e)
             {
+                try
+                {
+                    MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
+                    layout.setPageable(true);
+                    enableParentLayout(layout);
+                } catch (Exception ignored)
+                {
+                }
             }
         }
     }

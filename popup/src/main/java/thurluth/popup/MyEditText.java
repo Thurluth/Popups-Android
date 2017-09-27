@@ -145,7 +145,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
-                if (keyEvent != null && i == EditorInfo.IME_ACTION_DONE)
+                if (i == EditorInfo.IME_ACTION_DONE)
                 {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -170,7 +170,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
-                if (keyEvent != null && i == EditorInfo.IME_ACTION_DONE)
+                if (i == EditorInfo.IME_ACTION_DONE)
                 {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
