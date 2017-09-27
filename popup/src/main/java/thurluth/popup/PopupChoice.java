@@ -1,5 +1,6 @@
 package thurluth.popup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -20,8 +21,12 @@ import android.widget.TextView;
 public class PopupChoice extends Popup
 {
 
-    public interface OnSelectedListener
+    public interface ChoicesListener
     {
+        String[] setChoices();
+
+        int setDisplayableChoices();
+
         void onSelected(String choice);
     }
 
@@ -33,13 +38,12 @@ public class PopupChoice extends Popup
     private ScrollView choicesLayout;
     private LinearLayout choicesContent;
     private String value;
-    private final OnSelectedListener listener;
+    private final ChoicesListener listener;
     private Point screenSize = new Point();
 
     private void createLayout(Display display)
     {
         int colorPopup = Color.parseColor("#f5f5f5");
-        int popupOutlineColor = Color.parseColor("#34000000");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
 
@@ -263,29 +267,20 @@ public class PopupChoice extends Popup
         messageLayout.addView(buttonLayout);
     }
 
-    public String getValue()
+    public PopupChoice(@NonNull Activity activity, ChoicesListener listener)
     {
-        return value;
-    }
-
-    public PopupChoice(@NonNull RelativeLayout _parentLayout, @NonNull Display display, OnSelectedListener listener)
-    {
-        super(_parentLayout);
+        super(activity.getWindow().getDecorView().getRootView());
         this.listener = listener;
-        context = _parentLayout.getContext();
+        this.displayableChoices = this.listener.setDisplayableChoices();
+        if (this.displayableChoices <= 0)
+            this.displayableChoices = 3;
+        context = activity.getApplicationContext();
         displayMetrics = context.getResources().getDisplayMetrics();
-        createLayout(display);
-    }
-
-    public PopupChoice(@NonNull RelativeLayout _parentLayout, @NonNull Display display, int displayableChoices, OnSelectedListener listener)
-    {
-        super(_parentLayout);
-        this.listener = listener;
-        if (displayableChoices > 0)
-            this.displayableChoices = displayableChoices;
-        context = _parentLayout.getContext();
-        displayMetrics = context.getResources().getDisplayMetrics();
-        createLayout(display);
+        createLayout(activity.getWindowManager().getDefaultDisplay());
+        String[] choicesList = this.listener.setChoices();
+        for (String choice : choicesList)
+            this.addChoice(choice);
+        endChoice();
     }
 
     @Override

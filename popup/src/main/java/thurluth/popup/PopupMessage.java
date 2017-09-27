@@ -1,5 +1,6 @@
 package thurluth.popup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -167,10 +168,10 @@ public class PopupMessage extends Popup
         acceptButton.setBackgroundTintList(background);
     }
 
-    public PopupMessage(@NonNull RelativeLayout _parentLayout, @NonNull Display display)
+    public PopupMessage(@NonNull Activity activity)
     {
-        super(_parentLayout);
-        Context context = _parentLayout.getContext();
-        createLayout(context, display, context.getResources().getDisplayMetrics());
+        super(activity.getWindow().getDecorView().getRootView());
+        Context context = activity.getApplicationContext();
+        createLayout(context, activity.getWindowManager().getDefaultDisplay(), context.getResources().getDisplayMetrics());
     }
 }

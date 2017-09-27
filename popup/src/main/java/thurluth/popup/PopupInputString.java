@@ -1,5 +1,6 @@
 package thurluth.popup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -321,11 +322,11 @@ public class PopupInputString extends Popup
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupInputString(@NonNull RelativeLayout _parentLayout, @NonNull Display display)
+    public PopupInputString(@NonNull Activity activity)
     {
-        super(_parentLayout);
-        Context context = _parentLayout.getContext();
-        createLayout(context, display, context.getResources().getDisplayMetrics());
+        super(activity.getWindow().getDecorView().getRootView());
+        Context context = activity.getApplicationContext();
+        createLayout(context, activity.getWindowManager().getDefaultDisplay(), context.getResources().getDisplayMetrics());
     }
 
     @Override

@@ -61,7 +61,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.3.2'
+    compile 'com.github.Thurluth:Popups-Android:1.4.0'
 }
 ```
 
@@ -69,7 +69,7 @@ dependencies {
 
 <br/>&rarr; Create Popup :
 ```
-PopupType popup = new PopupType(RelativeLayout activityLayout, Display display);
+PopupType popup = new PopupType(Activity activity);
 ```
  
 <br/>&rarr; Set Popup message text :
@@ -183,36 +183,49 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 
 <br/>&rarr; PopupChoice creation :
 ```
-PopupChoice popup = new PopupChoice(RelativeLayout activityLayout, Display display,
-                                    int displayableChoices,
-                                    OnSelectedListener listener);
+PopupChoice popup = new PopupChoice(Activity activity, ChoicesListener listener);
 ```
-> _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)<br/>
-This is the number of choices that can be displayed at once, when this number is passed,
-choices are scrollable.
+
 
 ```
-lister = new PopupChoice.OnSelectedListener() {
+lister = new PopupChoice.ChoicesListener()
+{
     @Override
-    public void onSelected(String choice) {
-        /*
-        *   HERE YOUR CODE THAT WILL
-        *   BE EXECUTED WHEN A CHOICE
-        *   HAS BEEN SELETED
-        */
+    public String[] setChoices()
+    {
+        return new String[] {
+                "Here",
+                "You",
+                "Put",
+                "Your",
+                "Choices",
+                "List"
+        };
     }
-}
+    
+    @Override
+    public int setDisplayableChoices()
+    {
+        return {int};
+    }
+    
+    @Override
+    public void onSelected(String choice)
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN A CHOICE
+         *   HAS BEEN SELETED
+         */
+    }
+};
  ```
-
-<br/>&rarr; Add choice :
-```
-popup.addChoice(String text);
-```
-
-<br/>&rarr; When all choices added :
-```
-popup.endChoice();
-```
+ 
+ <br/>
+ 
+ > _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)<br/>
+    This is the number of choices that can be displayed at once, when this number is passed,
+    choices are scrollable.
 
 ## <br/>PopupInput usage
 

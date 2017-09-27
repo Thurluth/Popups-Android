@@ -4,17 +4,18 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 abstract class Popup
 {
-    RelativeLayout parentLayout;
+    ViewGroup parentLayout;
     RelativeLayout generalLayout;
     LinearLayout messageLayout;
 
@@ -94,163 +95,30 @@ abstract class Popup
         message.setTextSize(size);
     }
 
-    Popup(@NonNull RelativeLayout _parentLayout)
+    Popup(@NonNull View _parentLayout)
     {
-        parentLayout = _parentLayout;
+        parentLayout = (ViewGroup) _parentLayout;
     }
 
-    void disableParentLayout(RelativeLayout parentLayout)
+    void disableParentLayout(ViewGroup parentLayout)
     {
         for (int i = 0; i < parentLayout.getChildCount(); i++)
         {
             View child = parentLayout.getChildAt(i);
+            Log.d("Popups", "CHILD N°" + i + " is a " + child.getClass());
             child.setEnabled(false);
             try
             {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
+                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
                 if (layout.getTag() != "Popup Tag")
                     disableParentLayout(layout);
-            } catch (Exception e)
+            } catch (Exception ignored)
             {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    disableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        disableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            disableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
             }
         }
     }
 
-    private void disableParentLayout(LinearLayout parentLayout)
-    {
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(false);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                disableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    disableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        disableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            disableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void disableParentLayout(ScrollView parentLayout)
-    {
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(false);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                disableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    disableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        disableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            disableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void disableParentLayout(MyViewPager parentLayout)
-    {
-        parentLayout.setPageable(false);
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(false);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                if (layout.getTag() != "Popup Tag")
-                    disableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    disableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        disableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            disableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    void enableParentLayout(RelativeLayout parentLayout)
+    void enableParentLayout(ViewGroup parentLayout)
     {
         for (int i = 0; i < parentLayout.getChildCount(); i++)
         {
@@ -258,143 +126,10 @@ abstract class Popup
             child.setEnabled(true);
             try
             {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
+                ViewGroup layout = (ViewGroup) parentLayout.getChildAt(i);
                 enableParentLayout(layout);
-            } catch (Exception e)
+            } catch (Exception ignored)
             {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    enableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        enableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            enableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void enableParentLayout(LinearLayout parentLayout)
-    {
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(true);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                enableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    enableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        enableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            enableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void enableParentLayout(ScrollView parentLayout)
-    {
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(true);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                enableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    enableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        enableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            enableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void enableParentLayout(MyViewPager parentLayout)
-    {
-        parentLayout.setPageable(true);
-        for (int i = 0; i < parentLayout.getChildCount(); i++)
-        {
-            View child = parentLayout.getChildAt(i);
-            child.setEnabled(true);
-            try
-            {
-                RelativeLayout layout = (RelativeLayout) parentLayout.getChildAt(i);
-                enableParentLayout(layout);
-            } catch (Exception e)
-            {
-                try
-                {
-                    LinearLayout layout = (LinearLayout) parentLayout.getChildAt(i);
-                    enableParentLayout(layout);
-                } catch (Exception ex)
-                {
-                    try
-                    {
-                        ScrollView layout = (ScrollView) parentLayout.getChildAt(i);
-                        enableParentLayout(layout);
-                    } catch (Exception exe)
-                    {
-                        try
-                        {
-                            MyViewPager layout = (MyViewPager) parentLayout.getChildAt(i);
-                            enableParentLayout(layout);
-                        } catch (Exception ignored)
-                        {
-                        }
-                    }
-                }
             }
         }
     }
