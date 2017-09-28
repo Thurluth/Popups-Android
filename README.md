@@ -73,7 +73,7 @@ dependencies {
 ```
 PopupType popup = new PopupType(Activity activity, PopupListener listener);
 ```
-See [different listeners](##Listeners) bellow
+See [different listeners](#diferent-listeners) bellow
  
 <br/>&rarr; Set Popup message text :
 ```
@@ -170,7 +170,7 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
 > Close popup by default
 
-## Listeners
+## Different listeners
 
 <br/>&rarr; PopupMessage :
 
