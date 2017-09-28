@@ -73,7 +73,7 @@ dependencies {
 ```
 PopupType popup = new PopupType(Activity activity, PopupListener listener);
 ```
-> See different listeners bellow
+See [different listeners](#different-listeners) bellow
  
 <br/>&rarr; Set Popup message text :
 ```
@@ -125,12 +125,6 @@ popup.setPopupCornerRadius(int radius);
 popup.display();
 ```
 
-<br/>&rarr; Close Popup :
-```
-popup.closePopup();
-```
-> **When you change a listener, you have to call this method if you want to close the popup**
-
 ## <br/>Popups having an accept button usage
 
 <br/>&rarr; Set accept button icon color :
@@ -176,7 +170,7 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
 > Close popup by default
 
-## <br/>Different listeners
+## Different listeners
 
 <br/>&rarr; PopupMessage :
 
