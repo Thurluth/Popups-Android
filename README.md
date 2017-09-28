@@ -73,7 +73,7 @@ dependencies {
 ```
 PopupType popup = new PopupType(Activity activity, PopupListener listener);
 ```
-See [different listeners](#diferent-listeners) bellow
+See [different listeners](#different-listeners) bellow
  
 <br/>&rarr; Set Popup message text :
 ```
