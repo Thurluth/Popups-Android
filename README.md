@@ -63,7 +63,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.5.0'
+    compile 'com.github.Thurluth:Popups-Android:1.5.1'
 }
 ```
 

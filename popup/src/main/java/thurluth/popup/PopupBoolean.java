@@ -3,7 +3,6 @@ package thurluth.popup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
@@ -60,7 +59,7 @@ public class PopupBoolean extends Popup
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
-        message.setText(Resources.getSystem().getString(R.string.default_message));
+        message.setText(R.string.default_message);
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         message.setTextSize(20);

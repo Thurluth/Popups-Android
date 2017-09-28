@@ -67,7 +67,7 @@ public class PopupInputString extends Popup
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
-        message.setText("Text");
+        message.setText(R.string.default_message);
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         message.setTextSize(24);
@@ -117,18 +117,13 @@ public class PopupInputString extends Popup
         buttonLayout.setGravity(Gravity.CENTER);
 
         //          SET ACCEPT BUTTON
-        int color = Color.parseColor("#60C5FF");
         int[][] states = new int[][]{
-                new int[]{android.R.attr.state_enabled}, // enabled
-                new int[]{-android.R.attr.state_enabled}, // disabled
-                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{-android.R.attr.state_pressed}, // unpressed
                 new int[]{android.R.attr.state_pressed}  // pressed
         };
         int[] colors = new int[]{
-                color,
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                acceptColorNotPressed,
+                acceptColorPressed
         };
         ColorStateList background = new ColorStateList(states, colors);
         ImageButton acceptButton = new ImageButton(context);
@@ -152,18 +147,13 @@ public class PopupInputString extends Popup
         buttonLayout.addView(acceptButton);
 
         //          SET CANCEL BUTTON
-        color = Color.parseColor("#ff4141");
         states = new int[][]{
-                new int[]{android.R.attr.state_enabled}, // enabled
-                new int[]{-android.R.attr.state_enabled}, // disabled
-                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{-android.R.attr.state_pressed}, // unpressed
                 new int[]{android.R.attr.state_pressed}  // pressed
         };
         colors = new int[]{
-                color,
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                refuseColorNotPressed,
+                refuseColorPressed
         };
         background = new ColorStateList(states, colors);
         ImageButton cancelButton = new ImageButton(context);

@@ -3,7 +3,6 @@ package thurluth.popup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
@@ -58,25 +57,20 @@ public class PopupMessage extends Popup
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
-        message.setText(Resources.getSystem().getString(R.string.default_message));
+        message.setText(R.string.default_message);
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         message.setTextSize(20);
         message.setTag("Message");
 
         //          SET ACCEPT BUTTON
-        int color = Color.parseColor("#60C5FF");
         int[][] states = new int[][]{
-                new int[]{android.R.attr.state_enabled}, // enabled
-                new int[]{-android.R.attr.state_enabled}, // disabled
-                new int[]{-android.R.attr.state_checked}, // unchecked
+                new int[]{-android.R.attr.state_pressed}, // not pressed
                 new int[]{android.R.attr.state_pressed}  // pressed
         };
         int[] colors = new int[]{
-                color,
-                Color.RED,
-                Color.GREEN,
-                Color.BLUE
+                acceptColorNotPressed,
+                acceptColorPressed
         };
         ColorStateList background = new ColorStateList(states, colors);
         ImageButton acceptButton = new ImageButton(context);
