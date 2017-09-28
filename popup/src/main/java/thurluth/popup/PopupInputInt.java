@@ -6,16 +6,14 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.NonNull;
-import android.text.InputFilter;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -24,12 +22,19 @@ import android.widget.TextView;
 public class PopupInputInt extends Popup
 {
 
-    private MyEditText input;
+    public interface PopupListener
+    {
+        void onConfirm(int value);
 
-    private void createLayout(final Context context, Display display, DisplayMetrics displayMetrics)
+        void onCancel();
+    }
+
+    private MyEditText input;
+    private PopupListener listener;
+
+    private void createLayout(final Context context, Display display)
     {
         int colorPopup = Color.parseColor("#f5f5f5");
-        int popupOutlineColor = Color.parseColor("#34000000");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
         Point screenSize = new Point();
@@ -61,7 +66,7 @@ public class PopupInputInt extends Popup
         final TextView message = new TextView(context);
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), pxToDp(10, displayMetrics), pxToDp(5, displayMetrics), 0);
+        layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
         message.setText("Text");
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -69,33 +74,39 @@ public class PopupInputInt extends Popup
         message.setTag("Message");
 
         //          SET INPUT FIELD
-        layoutParams = new LinearLayout.LayoutParams((int) (popupWidth / 2.5f),
+        layoutParams = new LinearLayout.LayoutParams(popupWidth / 2,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), 0, pxToDp(5, displayMetrics), pxToDp(5, displayMetrics));
+        layoutParams.setMargins(0, dpToPx(5), 0, dpToPx(10));
         input = new MyEditText(context);
         input.setLayoutParams(layoutParams);
+        input.setTextColor(Color.BLACK);
         input.setTextSize(20);
         input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        InputFilter[] inputFilter = new InputFilter[1];
-        inputFilter[0] = new InputFilter.LengthFilter(9);
+        input.setGravity(Gravity.CENTER);
         input.setTag("Input");
-        input.setFilters(inputFilter);
-        input.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        input.setFocusable(true);
+        input.setFocusableInTouchMode(true);
+        input.setHandlesColors(Color.parseColor("#60C5FF"));
+        input.setCursorColor(Color.parseColor("#60C5FF"));
+        input.setHighlightColor(Color.parseColor("#A260C5FF"));
+        input.setBackground(context.getDrawable(R.drawable.edittext));
+        input.setOnFocusChangeListener(new View.OnFocusChangeListener()
         {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            public void onFocusChange(View view, boolean b)
             {
-                if (actionId == EditorInfo.IME_ACTION_DONE)
-                {
-                    //Clear focus here from editText
-                    InputMethodManager inputManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    inputManager.hideSoftInputFromWindow(input.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    input.clearFocus();
-                }
-                return false;
+                LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.edittext);
+                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
+                if (b)
+                    shape.setStroke(4, Color.parseColor("#60C5FF"));
+                else
+                    shape.setStroke(4, Color.GRAY);
+                input.setBackground(layers);
             }
         });
+        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        generalLayout.addView(input.getFocusNothing());
 
         //          SET BUTTONS LAYOUT
         LinearLayout buttonLayout = new LinearLayout(context);
@@ -127,7 +138,15 @@ public class PopupInputInt extends Popup
         acceptButton.setLayoutParams(layoutParams);
         acceptButton.setImageResource(R.drawable.icon_confirm);
         acceptButton.setBackgroundTintList(background);
-        acceptButton.setOnClickListener(defaultListener);
+        acceptButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onConfirm(getValue());
+            }
+        });
         acceptButton.setTag("Confirm");
         buttonLayout.addView(acceptButton);
 
@@ -153,7 +172,15 @@ public class PopupInputInt extends Popup
         cancelButton.setBackgroundTintList(background);
         cancelButton.setLayoutParams(layoutParams);
         cancelButton.setImageResource(R.drawable.icon_cancel);
-        cancelButton.setOnClickListener(defaultListener);
+        cancelButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onCancel();
+            }
+        });
         cancelButton.setTag("Cancel");
         buttonLayout.addView(cancelButton);
 
@@ -171,12 +198,6 @@ public class PopupInputInt extends Popup
     }
 
     //      ACCEPT BUTTON SETTINGS
-
-    public void setAcceptListener(View.OnClickListener listener)
-    {
-        ImageButton accept = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        accept.setOnClickListener(listener);
-    }
 
     public int getAcceptColor()
     {
@@ -251,12 +272,6 @@ public class PopupInputInt extends Popup
 
     //      CANCEL BUTTON SETTINGS
 
-    public void setCancelListener(View.OnClickListener listener)
-    {
-        ImageButton refuse = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        refuse.setOnClickListener(listener);
-    }
-
     public int getCancelColor()
     {
         return (this.refuseColor);
@@ -326,11 +341,12 @@ public class PopupInputInt extends Popup
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupInputInt(@NonNull Activity activity)
+    public PopupInputInt(@NonNull Activity activity, final PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
+        this.listener = listener;
         Context context = activity.getApplicationContext();
-        createLayout(context, activity.getWindowManager().getDefaultDisplay(), context.getResources().getDisplayMetrics());
+        createLayout(context, activity.getWindowManager().getDefaultDisplay());
     }
 
     @Override

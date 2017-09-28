@@ -3,11 +3,11 @@ package thurluth.popup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -19,7 +19,16 @@ import android.widget.TextView;
 public class PopupBoolean extends Popup
 {
 
-    private void createLayout(Context context, Display display, DisplayMetrics displayMetrics)
+    public interface PopupListener
+    {
+        void onAccept();
+
+        void onRefuse();
+    }
+
+    private PopupListener listener;
+
+    private void createLayout(Context context, Display display)
     {
         int colorPopup = Color.parseColor("#f5f5f5");
         generalLayout = new RelativeLayout(context);
@@ -50,8 +59,8 @@ public class PopupBoolean extends Popup
         TextView message = new TextView(context);
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), pxToDp(10, displayMetrics), pxToDp(5, displayMetrics), 0);
-        message.setText("Text");
+        layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
+        message.setText(Resources.getSystem().getString(R.string.default_message));
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         message.setTextSize(20);
@@ -82,7 +91,15 @@ public class PopupBoolean extends Popup
         acceptButton.setLayoutParams(layoutParams);
         acceptButton.setImageResource(R.drawable.icon_confirm);
         acceptButton.setBackgroundTintList(background);
-        acceptButton.setOnClickListener(defaultListener);
+        acceptButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onAccept();
+            }
+        });
         acceptButton.setTag("Confirm");
         buttonLayout.addView(acceptButton);
 
@@ -103,7 +120,15 @@ public class PopupBoolean extends Popup
         cancelButton.setBackgroundTintList(background);
         cancelButton.setLayoutParams(layoutParams);
         cancelButton.setImageResource(R.drawable.icon_cancel);
-        cancelButton.setOnClickListener(defaultListener);
+        cancelButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onRefuse();
+            }
+        });
         cancelButton.setTag("Cancel");
         buttonLayout.addView(cancelButton);
 
@@ -114,12 +139,6 @@ public class PopupBoolean extends Popup
     }
 
     //      ACCEPT BUTTON SETTINGS
-
-    public void setAcceptListener(View.OnClickListener listener)
-    {
-        ImageButton accept = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        accept.setOnClickListener(listener);
-    }
 
     public int getAcceptColor()
     {
@@ -194,12 +213,6 @@ public class PopupBoolean extends Popup
 
     //      CANCEL BUTTON SETTINGS
 
-    public void setCancelListener(View.OnClickListener listener)
-    {
-        ImageButton refuse = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        refuse.setOnClickListener(listener);
-    }
-
     public int getCancelColor()
     {
         return (this.refuseColor);
@@ -269,10 +282,11 @@ public class PopupBoolean extends Popup
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupBoolean(@NonNull Activity activity)
+    public PopupBoolean(@NonNull Activity activity, PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
+        this.listener = listener;
         Context context = activity.getApplicationContext();
-        createLayout(context, activity.getWindowManager().getDefaultDisplay(), context.getResources().getDisplayMetrics());
+        createLayout(context, activity.getWindowManager().getDefaultDisplay());
     }
 }

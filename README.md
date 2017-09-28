@@ -63,7 +63,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.4.3'
+    compile 'com.github.Thurluth:Popups-Android:1.5.0'
 }
 ```
 
@@ -71,8 +71,9 @@ dependencies {
 
 <br/>&rarr; Create Popup :
 ```
-PopupType popup = new PopupType(Activity activity);
+PopupType popup = new PopupType(Activity activity, PopupListener listener);
 ```
+> See different listeners bellow
  
 <br/>&rarr; Set Popup message text :
 ```
@@ -132,12 +133,6 @@ popup.closePopup();
 
 ## <br/>Popups having an accept button usage
 
-<br/>&rarr; Set accept button action when clicked :
-```
-popup.setAcceptListener(onClickListener listener);
-```
-> Close popup by default
-
 <br/>&rarr; Set accept button icon color :
 ```
 popup.setAcceptColor(int color);
@@ -181,13 +176,53 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
 > Close popup by default
 
-## <br/>PopupChoice usage
+## <br/>Different listeners
 
-<br/>&rarr; PopupChoice creation :
-```
-PopupChoice popup = new PopupChoice(Activity activity, ChoicesListener listener);
-```
+<br/>&rarr; PopupMessage :
 
+```
+lister = new PopupMessage.PopupListener()
+{
+    @Override
+    public void onClosed()
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN POPUP
+         *   IS CLOSED
+         */
+    }
+});
+ ```
+
+<br/>&rarr; PopupBoolean :
+
+```
+lister = new PopupBoolean.PopupListener()
+{
+    @Override
+    public void onAccept()
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN ACCEPT
+         *   BUTTON IS PRESSED
+         */
+    }
+    
+    @Override
+    public void onRefuse()
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN REFUSE
+         *   BUTTON IS PRESSED
+         */    
+    }
+});
+ ```
+
+<br/>&rarr; PopupChoice :
 
 ```
 lister = new PopupChoice.ChoicesListener()
@@ -217,7 +252,17 @@ lister = new PopupChoice.ChoicesListener()
          /*
          *   HERE YOUR CODE THAT WILL
          *   BE EXECUTED WHEN A CHOICE
-         *   HAS BEEN SELETED
+         *   IS SELECTED
+         */
+    }
+    
+    @Override
+    public void onCancel()
+    {
+         /*
+         *    HERE YOUR CODE THAT WILL
+         *    BE EXECUTED WHEN CANCEL
+         *    IS PRESSED
          */
     }
 };
@@ -229,6 +274,33 @@ lister = new PopupChoice.ChoicesListener()
     This is the number of choices that can be displayed at once, when this number is passed,
     choices are scrollable.
 
+<br/>&rarr; PopupInput :
+
+```
+lister = new PopupInput.PopupListener()
+{
+    @Override
+    public void onConfirm(Object value)
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN CONFIRM
+         *   BUTTON IS PRESSED
+         */
+    }
+    
+    @Override
+    public void onRefuse()
+    {
+         /*
+         *   HERE YOUR CODE THAT WILL
+         *   BE EXECUTED WHEN CANCEL
+         *   BUTTON IS PRESSED
+         */    
+    }
+});
+ ```
+
 ## <br/>PopupInput usage
 
 <br/>&rarr; Set default value in EditText (nothing if don't call) :
@@ -236,16 +308,6 @@ lister = new PopupChoice.ChoicesListener()
 popup.setDefaultInput(CharSequence defaultValue);
 ```
 > _Null_ by default
-
-<br/>&rarr; Get the value entered :
-```
-popup.getValue();
-```
-
-<br/>&rarr; Get the value as text :
-```
-popup.getValueStr();
-```
 
 <br/>
 

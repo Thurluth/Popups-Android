@@ -1,5 +1,6 @@
 package thurluth.popup;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 abstract class Popup
 {
-    ViewGroup parentLayout;
+    private ViewGroup parentLayout;
     RelativeLayout generalLayout;
     LinearLayout messageLayout;
 
@@ -28,9 +29,10 @@ abstract class Popup
     int popupOutlineWidth = 2;
     int popupOutlineColor = Color.parseColor("#34000000");
 
-    int pxToDp(int px, DisplayMetrics displayMetrics)
+    int dpToPx(int px)
     {
         float res;
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
 
         res = px * displayMetrics.density;
         return (int) res;
@@ -100,7 +102,7 @@ abstract class Popup
         parentLayout = (ViewGroup) _parentLayout;
     }
 
-    void disableParentLayout(ViewGroup parentLayout)
+    private void disableParentLayout(ViewGroup parentLayout)
     {
         for (int i = 0; i < parentLayout.getChildCount(); i++)
         {
@@ -134,7 +136,7 @@ abstract class Popup
         }
     }
 
-    void enableParentLayout(ViewGroup parentLayout)
+    private void enableParentLayout(ViewGroup parentLayout)
     {
         for (int i = 0; i < parentLayout.getChildCount(); i++)
         {
@@ -167,14 +169,14 @@ abstract class Popup
         }
     }
 
-    void fadeOutAnimation()
+    private void fadeOutAnimation()
     {
         Animation fadeOut = new AlphaAnimation(1.0f, 0.0f);
         fadeOut.setDuration(300);
         generalLayout.startAnimation(fadeOut);
     }
 
-    void fadeInAnimation()
+    private void fadeInAnimation()
     {
         Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
         fadeIn.setDuration(300);
@@ -188,19 +190,10 @@ abstract class Popup
         disableParentLayout(parentLayout);
     }
 
-    public void closePopup()
+    void closePopup()
     {
         enableParentLayout(parentLayout);
         fadeOutAnimation();
         parentLayout.removeView(generalLayout);
     }
-
-    View.OnClickListener defaultListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            closePopup();
-        }
-    };
 }

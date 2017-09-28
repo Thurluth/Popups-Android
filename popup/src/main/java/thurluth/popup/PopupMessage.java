@@ -3,11 +3,11 @@ package thurluth.popup;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -19,10 +19,16 @@ import android.widget.TextView;
 public class PopupMessage extends Popup
 {
 
-    private void createLayout(Context context, Display display, DisplayMetrics displayMetrics)
+    public interface PopupListener
+    {
+        void onClosed();
+    }
+
+    private PopupListener listener;
+
+    private void createLayout(Context context, Display display)
     {
         int colorPopup = Color.parseColor("#f5f5f5");
-        int popupOutlineColor = Color.parseColor("#34000000");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
         Point screenSize = new Point();
@@ -51,8 +57,8 @@ public class PopupMessage extends Popup
         TextView message = new TextView(context);
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), pxToDp(10, displayMetrics), pxToDp(5, displayMetrics), 0);
-        message.setText("Text");
+        layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
+        message.setText(Resources.getSystem().getString(R.string.default_message));
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         message.setTextSize(20);
@@ -80,7 +86,15 @@ public class PopupMessage extends Popup
         acceptButton.setLayoutParams(layoutParams);
         acceptButton.setImageResource(R.drawable.icon_confirm);
         acceptButton.setBackgroundTintList(background);
-        acceptButton.setOnClickListener(defaultListener);
+        acceptButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onClosed();
+            }
+        });
         acceptButton.setTag("Confirm");
 
         messageLayout.addView(message);
@@ -90,12 +104,6 @@ public class PopupMessage extends Popup
     }
 
     //      ACCEPT BUTTON SETTINGS
-
-    public void setAcceptListener(View.OnClickListener listener)
-    {
-        ImageButton accept = (ImageButton) messageLayout.findViewWithTag("Confirm");
-        accept.setOnClickListener(listener);
-    }
 
     public int getAcceptColor()
     {
@@ -168,10 +176,11 @@ public class PopupMessage extends Popup
         acceptButton.setBackgroundTintList(background);
     }
 
-    public PopupMessage(@NonNull Activity activity)
+    public PopupMessage(@NonNull Activity activity, PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
+        this.listener = listener;
         Context context = activity.getApplicationContext();
-        createLayout(context, activity.getWindowManager().getDefaultDisplay(), context.getResources().getDisplayMetrics());
+        createLayout(context, activity.getWindowManager().getDefaultDisplay());
     }
 }

@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -21,24 +20,25 @@ import android.widget.TextView;
 public class PopupChoice extends Popup
 {
 
-    public interface ChoicesListener
+    public interface PopupListener
     {
         String[] setChoices();
 
         int setDisplayableChoices();
 
         void onSelected(String choice);
+
+        void onCancel();
     }
 
     private int displayableChoices = 3;
     private Context context;
     private PopupChoice popup = this;
-    private DisplayMetrics displayMetrics;
     private LinearLayout buttonLayout;
     private ScrollView choicesLayout;
     private LinearLayout choicesContent;
     private String value;
-    private final ChoicesListener listener;
+    private PopupListener listener;
     private Point screenSize = new Point();
 
     private void createLayout(Display display)
@@ -78,10 +78,10 @@ public class PopupChoice extends Popup
         choicesContent.setGravity(Gravity.CENTER);
         choicesContent.setLayoutParams(layoutParams);
         choicesLayout = new ScrollView(context);
-        int choiceHeight = 20 + pxToDp(5, displayMetrics) * 2 + pxToDp(10, displayMetrics) * 2;
+        int choiceHeight = 20 + dpToPx(5) * 2 + dpToPx(10) * 2;
         layoutParams = new LinearLayout.LayoutParams(popupWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(10, displayMetrics), pxToDp(10, displayMetrics),
-                pxToDp(10, displayMetrics), pxToDp(10, displayMetrics));
+        layoutParams.setMargins(dpToPx(10), dpToPx(10),
+                dpToPx(10), dpToPx(10));
         choicesLayout.setLayoutParams(layoutParams);
         choicesLayout.addView(choicesContent);
 
@@ -90,7 +90,7 @@ public class PopupChoice extends Popup
         final TextView message = new TextView(context);
         layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), pxToDp(10, displayMetrics), pxToDp(5, displayMetrics), 0);
+        layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
         message.setText("Text");
         message.setLayoutParams(layoutParams);
         message.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -126,7 +126,15 @@ public class PopupChoice extends Popup
         cancelButton.setBackgroundTintList(background);
         cancelButton.setLayoutParams(layoutParams);
         cancelButton.setImageResource(R.drawable.icon_cancel);
-        cancelButton.setOnClickListener(defaultListener);
+        cancelButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onCancel();
+            }
+        });
         cancelButton.setTag("Cancel");
         buttonLayout.addView(cancelButton);
 
@@ -136,12 +144,6 @@ public class PopupChoice extends Popup
     }
 
     //      CANCEL BUTTON SETTINGS
-
-    public void setCancelListener(View.OnClickListener listener)
-    {
-        ImageButton refuse = (ImageButton) messageLayout.findViewWithTag("Cancel");
-        refuse.setOnClickListener(listener);
-    }
 
     public int getCancelColor()
     {
@@ -220,8 +222,7 @@ public class PopupChoice extends Popup
         final TextView choice = new TextView(context);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(pxToDp(5, displayMetrics), pxToDp(5, displayMetrics),
-                pxToDp(5, displayMetrics), pxToDp(5, displayMetrics));
+        layoutParams.setMargins(dpToPx(5), dpToPx(5), dpToPx(5), dpToPx(5));
         choice.setLayoutParams(layoutParams);
         choice.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         choice.setTextSize(20);
@@ -242,7 +243,7 @@ public class PopupChoice extends Popup
         {
             View v = new View(context);
             layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 2);
-            layoutParams.setMargins(pxToDp(50, displayMetrics), 0, pxToDp(50, displayMetrics), 0);
+            layoutParams.setMargins(dpToPx(50), 0, dpToPx(50), 0);
             v.setLayoutParams(layoutParams);
             v.setBackgroundColor(colorChoiceSeparator);
 
@@ -250,10 +251,9 @@ public class PopupChoice extends Popup
             if (choicesContent.getChildCount() > displayableChoices + 2)
             {
                 int popupWidth = (int) (screenSize.x * (70f / 100f));
-                int choiceHeight = 20 + pxToDp(5, displayMetrics) * 2 + pxToDp(10, displayMetrics) * 2;
+                int choiceHeight = 20 + dpToPx(5) * 2 + dpToPx(10) * 2;
                 layoutParams = new LinearLayout.LayoutParams(popupWidth, displayableChoices * choiceHeight);
-                layoutParams.setMargins(pxToDp(10, displayMetrics), pxToDp(10, displayMetrics),
-                        pxToDp(10, displayMetrics), pxToDp(10, displayMetrics));
+                layoutParams.setMargins(dpToPx(10), dpToPx(10), dpToPx(10), dpToPx(10));
                 choicesLayout.setLayoutParams(layoutParams);
             }
         }
@@ -267,7 +267,7 @@ public class PopupChoice extends Popup
         messageLayout.addView(buttonLayout);
     }
 
-    public PopupChoice(@NonNull Activity activity, ChoicesListener listener)
+    public PopupChoice(@NonNull Activity activity, PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
         this.listener = listener;
@@ -275,7 +275,6 @@ public class PopupChoice extends Popup
         if (this.displayableChoices <= 0)
             this.displayableChoices = 3;
         context = activity.getApplicationContext();
-        displayMetrics = context.getResources().getDisplayMetrics();
         createLayout(activity.getWindowManager().getDefaultDisplay());
         String[] choicesList = this.listener.setChoices();
         for (String choice : choicesList)
