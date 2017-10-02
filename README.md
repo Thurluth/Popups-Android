@@ -51,7 +51,7 @@ This Popup display a text and an EditText where you can enter text.
 
 ## How to use it in your project ?
 
-Add this line in your root build.gradle at the end of repositories:
+Add this line in your project build.gradle at the end of repositories:
 
 ```
 repositories {
