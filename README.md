@@ -55,7 +55,7 @@ Add this line in your root build.gradle at the end of repositories:
 
 ```
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url 'https://jitpack.io' } // THIS LINE
 }
 ```
 
@@ -63,7 +63,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.5.1'
+    compile 'com.github.Thurluth:Popups-Android:1.5.1' // THIS LINE
 }
 ```
 
