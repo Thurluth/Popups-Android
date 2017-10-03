@@ -39,14 +39,14 @@ This Popup display a text and an EditText where you can enter number.
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputInt.png"/>
 
 
-## <br/>PopupIdentification
+## <br/>PopupInputString
 
 This Popup display a text and an EditText where you can enter text.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputString.png"/>
 
 
-## <br/>PopupInputString
+## <br/>PopupIdentification
 
 This Popup display a text and an EditText where you can enter a login and one where you can enter a password.
 
