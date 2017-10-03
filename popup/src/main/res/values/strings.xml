@@ -2,4 +2,6 @@
     <string name="app_name">Popup</string>
 
     <string name="default_message">Text</string>
+    <string name="forgot_password">Forgot your password ?</string>
+    <string name="not_registered">Not registered yet ?</string>
 </resources>

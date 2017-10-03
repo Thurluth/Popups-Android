@@ -4,36 +4,47 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PopupInputInt extends Popup
+public class PopupIdentification extends Popup
 {
 
     public interface PopupListener
     {
-        void onConfirm(int value);
+        String onConfirm(String login, String password);
 
         void onCancel();
+
+        void onForgot();
+
+        void onRegister();
     }
 
-    private MyEditText input;
     private PopupListener listener;
+    private Context context;
 
     private void createLayout(final Context context, Display display)
     {
+        this.context = context;
+
         int colorPopup = Color.parseColor("#f5f5f5");
         generalLayout = new RelativeLayout(context);
         messageLayout = new LinearLayout(context);
@@ -64,7 +75,7 @@ public class PopupInputInt extends Popup
 
         //          SET MESSAGE TEXT VIEW
         final TextView message = new TextView(context);
-        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(dpToPx(5), dpToPx(10), dpToPx(5), 0);
         message.setText(R.string.default_message);
@@ -73,40 +84,57 @@ public class PopupInputInt extends Popup
         message.setTextSize(24);
         message.setTag("Message");
 
-        //          SET INPUT FIELD
-        layoutParams = new LinearLayout.LayoutParams(popupWidth / 2,
+        //          SET LOGIN INPUT FIELD
+        layoutParams = new LinearLayout.LayoutParams((int) (popupWidth / 1.5f),
                 LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.setMargins(0, dpToPx(5), 0, dpToPx(10));
-        input = new MyEditText(context);
-        input.setLayoutParams(layoutParams);
-        input.setTextColor(Color.BLACK);
-        input.setTextSize(20);
-        input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        input.setInputType(InputType.TYPE_CLASS_NUMBER);
-        input.setGravity(Gravity.CENTER);
-        input.setTag("Input");
-        input.setFocusable(true);
-        input.setFocusableInTouchMode(true);
-        input.setHandlesColors(Color.parseColor("#60C5FF"));
-        input.setCursorColor(Color.parseColor("#60C5FF"));
-        input.setHighlightColor(Color.parseColor("#A260C5FF"));
-        input.setBackground(context.getDrawable(R.drawable.edittext));
-        input.setOnFocusChangeListener(new View.OnFocusChangeListener()
+        final MyEditText loginInput = new MyEditText(context);
+        loginInput.setLayoutParams(layoutParams);
+        loginInput.setTextColor(Color.BLACK);
+        loginInput.setTextSize(20);
+        loginInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        loginInput.setTag("LoginInput");
+        loginInput.setPrefix("Login :");
+        loginInput.setFocusable(true);
+        loginInput.setFocusableInTouchMode(true);
+        loginInput.setHandlesColors(Color.parseColor("#60C5FF"));
+        loginInput.setCursorColor(Color.parseColor("#60C5FF"));
+        loginInput.setHighlightColor(Color.parseColor("#A260C5FF"));
+        loginInput.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        loginInput.setSelectAllOnFocus(true);
+        generalLayout.addView(loginInput.getFocusNothing());
+
+        //          SET PASSWORD INPUT FIELD
+        layoutParams = new LinearLayout.LayoutParams((int) (popupWidth / 1.5f),
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(0, dpToPx(5), 0, dpToPx(10));
+        final MyEditText passwordInput = new MyEditText(context);
+        passwordInput.setLayoutParams(layoutParams);
+        passwordInput.setTextColor(Color.BLACK);
+        passwordInput.setTextSize(20);
+        passwordInput.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        passwordInput.setTag("PasswordInput");
+        passwordInput.setPrefix("Password :");
+        passwordInput.setFocusable(true);
+        passwordInput.setFocusableInTouchMode(true);
+        passwordInput.setHandlesColors(Color.parseColor("#60C5FF"));
+        passwordInput.setCursorColor(Color.parseColor("#60C5FF"));
+        passwordInput.setHighlightColor(Color.parseColor("#A260C5FF"));
+        passwordInput.setImeOptions(EditorInfo.IME_ACTION_GO);
+        passwordInput.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
-            public void onFocusChange(View view, boolean b)
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
-                LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, R.drawable.edittext);
-                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
-                if (b)
-                    shape.setStroke(4, Color.parseColor("#60C5FF"));
-                else
-                    shape.setStroke(4, Color.GRAY);
-                input.setBackground(layers);
+                passwordInput.getFocusNothing().requestFocus();
+                setErrorMessage(listener.onConfirm(getLoginValue(), getPasswordValue()));
+                return false;
             }
         });
-        input.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        generalLayout.addView(input.getFocusNothing());
+        passwordInput.setSelectAllOnFocus(true);
+        generalLayout.addView(passwordInput.getFocusNothing());
+
 
         //          SET BUTTONS LAYOUT
         LinearLayout buttonLayout = new LinearLayout(context);
@@ -117,7 +145,7 @@ public class PopupInputInt extends Popup
 
         //          SET ACCEPT BUTTON
         int[][] states = new int[][]{
-                new int[]{-android.R.attr.state_pressed}, // not pressed
+                new int[]{-android.R.attr.state_pressed}, // unpressed
                 new int[]{android.R.attr.state_pressed}  // pressed
         };
         int[] colors = new int[]{
@@ -138,8 +166,7 @@ public class PopupInputInt extends Popup
             @Override
             public void onClick(View view)
             {
-                closePopup();
-                listener.onConfirm(getValue());
+                setErrorMessage(listener.onConfirm(getLoginValue(), getPasswordValue()));
             }
         });
         acceptButton.setTag("Confirm");
@@ -168,22 +195,112 @@ public class PopupInputInt extends Popup
             public void onClick(View view)
             {
                 closePopup();
+                final LinearLayout error = (LinearLayout) messageLayout.findViewWithTag("Error");
+                error.removeAllViews();
                 listener.onCancel();
             }
         });
         cancelButton.setTag("Cancel");
         buttonLayout.addView(cancelButton);
 
+        //          SET ERROR MESSAGE LAYOUT
+        LinearLayout error = new LinearLayout(context);
+        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dpToPx(20), dpToPx(10), dpToPx(20), dpToPx(10));
+        error.setLayoutParams(layoutParams);
+        error.setGravity(Gravity.CENTER);
+        error.setTag("Error");
+
+
+        //          SET IDENTIFICATION PROBLEMS LAYOUT
+        LinearLayout problemLayout = new LinearLayout(context);
+        layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(dpToPx(10), dpToPx(10), dpToPx(10), dpToPx(10));
+        problemLayout.setLayoutParams(layoutParams);
+        problemLayout.setGravity(Gravity.CENTER);
+
+        //          SET FORGOT PASSWORD
+        TextView forgot = new TextView(context);
+        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        forgot.setLayoutParams(layoutParams);
+        forgot.setText(R.string.forgot_password);
+        forgot.setTextSize(16);
+        forgot.setTextColor(Color.parseColor("#FF4FA0CF"));
+        forgot.setGravity(Gravity.CENTER);
+        forgot.setPaintFlags(forgot.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        forgot.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onForgot();
+            }
+        });
+        problemLayout.addView(forgot);
+
+        //          SET NOT REGISTERED
+        TextView register = new TextView(context);
+        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        register.setLayoutParams(layoutParams);
+        register.setText(R.string.not_registered);
+        register.setTextSize(16);
+        register.setTextColor(Color.parseColor("#FF4FA0CF"));
+        register.setGravity(Gravity.CENTER);
+        register.setPaintFlags(register.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        register.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                closePopup();
+                listener.onRegister();
+            }
+        });
+        problemLayout.addView(register);
+
+
         messageLayout.addView(message);
-        messageLayout.addView(input);
+        messageLayout.addView(loginInput);
+        messageLayout.addView(passwordInput);
+        messageLayout.addView(error);
+        messageLayout.addView(problemLayout);
         messageLayout.addView(buttonLayout);
 
         generalLayout.addView(messageLayout);
     }
 
+    private void setErrorMessage(CharSequence message)
+    {
+        final LinearLayout error = (LinearLayout) messageLayout.findViewWithTag("Error");
+        if (message != null && !message.toString().matches(""))
+        {
+            error.removeAllViews();
+            TextView errorMessage = new TextView(context);
+            errorMessage.setText(message);
+            errorMessage.setTextSize(18);
+            errorMessage.setTextColor(Color.RED);
+            errorMessage.setGravity(Gravity.CENTER);
+            errorMessage.setTypeface(null, Typeface.ITALIC);
+
+            error.addView(errorMessage);
+            Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake);
+            error.startAnimation(shake);
+        }
+        else
+        {
+            error.removeAllViews();
+            closePopup();
+        }
+    }
+
     public void setDefaultInput(CharSequence defaultValue)
     {
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
         input.setText(defaultValue);
     }
 
@@ -331,7 +448,7 @@ public class PopupInputInt extends Popup
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupInputInt(@NonNull Activity activity, final PopupListener listener)
+    public PopupIdentification(@NonNull Activity activity, final PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
         this.listener = listener;
@@ -343,7 +460,9 @@ public class PopupInputInt extends Popup
     public void closePopup()
     {
         super.closePopup();
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setEnabled(false);
+        input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
         input.setEnabled(false);
     }
 
@@ -351,23 +470,23 @@ public class PopupInputInt extends Popup
     public void display()
     {
         super.display();
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setText("");
+        input.setEnabled(true);
+        input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        input.setText("");
         input.setEnabled(true);
     }
 
-    private int getValue()
+    private String getLoginValue()
     {
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
-        if (input.getText().toString().matches(""))
-            return 0;
-        return Integer.parseInt(input.getText().toString());
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        return input.getText().toString();
     }
 
-    public CharSequence getValueStr()
+    private String getPasswordValue()
     {
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("Input");
-        if (input.getText().toString().matches(""))
-            return "0";
-        return input.getText();
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        return input.getText().toString();
     }
 }

@@ -39,11 +39,18 @@ This Popup display a text and an EditText where you can enter number.
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputInt.png"/>
 
 
-## <br/>PopupInputString
+## <br/>PopupIdentification
 
 This Popup display a text and an EditText where you can enter text.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputString.png"/>
+
+
+## <br/>PopupInputString
+
+This Popup display a text and an EditText where you can enter a login and one where you can enter a password.
+
+<img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupIdentification.png"/>
 
 <br/>
 
@@ -63,7 +70,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.5.1' // THIS LINE
+    compile 'com.github.Thurluth:Popups-Android:1.6.0' // THIS LINE
 }
 ```
 
@@ -170,6 +177,16 @@ popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
 > Close popup by default
 
+## <br/>PopupInput usage
+
+<br/>&rarr; Set default value in EditText (nothing if don't call) :
+```
+popup.setDefaultInput(CharSequence defaultValue);
+```
+> _Null_ by default
+
+<br/>
+
 ## Different listeners
 
 <br/>&rarr; PopupMessage :
@@ -256,17 +273,13 @@ lister = new PopupChoice.ChoicesListener()
          /*
          *    HERE YOUR CODE THAT WILL
          *    BE EXECUTED WHEN CANCEL
-         *    IS PRESSED
+         *    BUTTON IS PRESSED
          */
     }
 };
  ```
  
  <br/>
- 
- > _displayableChoices_ set on 3 by default or if the value entered is incorrect (<= 0)<br/>
-    This is the number of choices that can be displayed at once, when this number is passed,
-    choices are scrollable.
 
 <br/>&rarr; PopupInput :
 
@@ -295,15 +308,56 @@ lister = new PopupInput.PopupListener()
 });
  ```
 
-## <br/>PopupInput usage
+<br/>&rarr; PopupIdentification :
 
-<br/>&rarr; Set default value in EditText (nothing if don't call) :
 ```
-popup.setDefaultInput(CharSequence defaultValue);
-```
-> _Null_ by default
-
-<br/>
+lister = new PopupIdentification.ChoicesListener()
+{
+    @Override
+    public String onConfirm(String login, String password)
+    {
+         /*
+         *    HERE YOUR CODE THAT WILL
+         *    BE EXECUTED WHEN ACCEPT
+         *    BUTTON IS PRESSED
+         *
+         *    RETURN "" OR null IF YOU WANT
+         *    TO CLOSE THE POPUP.
+         *    OTHERWISE RETURN AN ERROR MESSAGE
+         */
+    }
+ 
+    @Override
+    public void onCancel()
+    {
+         /*
+         *    HERE YOUR CODE THAT WILL
+         *    BE EXECUTED WHEN CANCEL
+         *    BUTTON IS PRESSED
+         */
+    }
+ 
+    @Override
+    public void onForgot()
+    {
+         /*
+         *    HERE YOUR CODE THAT WILL
+         *    BE EXECUTED IF USER SAYS
+         *    HE FORGOT HIS PASSWORD
+         */
+    }
+ 
+    @Override
+    public void onRegister()
+    {
+         /*
+         *    HERE YOUR CODE THAT WILL
+         *    BE EXECUTED IF USER SAYS
+         *    HE WANTS TO REGISTER
+         */
+    }
+};
+ ```
 
 # DEVELOP BY
 

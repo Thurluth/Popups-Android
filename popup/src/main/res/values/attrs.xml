@@ -2,5 +2,7 @@
     <declare-styleable name="MyEditText">
         <attr name="prefix" format="string" />
         <attr name="parentLayout" format="reference"/>
+        <attr name="cursorColor" format="color"/>
+        <attr name="handlesColor" format="color"/>
     </declare-styleable>
 </resources>

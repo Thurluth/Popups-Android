@@ -3,11 +3,19 @@ package thurluth.popup;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,42 +27,153 @@ import android.widget.TextView;
 
 import java.lang.reflect.Field;
 
+import static thurluth.popup.R.drawable.edittext;
+
 /**
- * Created by Nathan on 08/09/2017.
+ * Created by Nathan on 02/10/2017.
  **/
 
 public class MyEditText extends android.support.v7.widget.AppCompatEditText
 {
-
+    TextPaint paint;
+    TagDrawable left;
+    LinearLayout focusNothing;
+    private boolean toFocusNothing = true;
+    String prefix;
     ViewGroup parentLayout;
     int viewPartRef;
-    LinearLayout focusNothing;
+    int color;
+    MyEditText editText = this;
 
-    private boolean toFocusNothing = true;
+    Rect line0bounds = new Rect();
+    int mLine0Baseline;
 
-    private String mPrefix;
-    private Rect mPrefixRect = new Rect();
-
-    private void createFocusNothing(Context context)
+    public MyEditText(final Context context)
     {
-        focusNothing = new LinearLayout(context);
-        focusNothing.setFocusable(true);
-        focusNothing.setFocusableInTouchMode(true);
+        super(context);
+
+        createFocusNothing(context);
+        prefix = "";
+        this.setOnEditorActionListener(new OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
+                if (i == EditorInfo.IME_ACTION_DONE)
+                {
+                    focusNothing.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
+        setBackgroundResource(edittext);
+        setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View view, boolean b)
+            {
+                LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, edittext);
+                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
+                if (b)
+                {
+                    shape.setStroke(4, Color.parseColor("#60C5FF"));
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(view, 0);
+                }
+                else
+                {
+                    shape.setStroke(4, Color.GRAY);
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                setBackground(layers);
+            }
+        });
+
+        left = new TagDrawable();
+
+        paint = getPaint();
+
+        if (prefix.length() != 0)
+            left.setText(prefix + " ");
+        else
+            left.setText(prefix);
+        setCompoundDrawablesRelative(left, null, null, null);
+        setPadding(10, 10, 10, 10);
+        this.color = getCurrentTextColor();
     }
 
-    public LinearLayout getFocusNothing()
+    public MyEditText(final Context context, AttributeSet attrs)
     {
-        return focusNothing;
-    }
+        super(context, attrs);
 
-    public void setPrefix(final String prefix)
-    {
-        mPrefix = prefix;
-    }
+        int cursorColor;
+        int handlesColor;
 
-    public void setToFocusNothing(boolean focus)
-    {
-        this.toFocusNothing = focus;
+        createFocusNothing(context);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MyEditText, 0, 0);
+        prefix = a.getString(R.styleable.MyEditText_prefix);
+        viewPartRef = a.getResourceId(R.styleable.MyEditText_parentLayout, -1);
+        cursorColor = a.getColor(R.styleable.MyEditText_cursorColor, -1);
+        handlesColor = a.getColor(R.styleable.MyEditText_handlesColor, -1);
+        if (prefix == null)
+            prefix = "";
+        if (cursorColor != -1)
+            setCursorColor(cursorColor);
+        if (handlesColor != -1)
+            setHandlesColors(handlesColor);
+        this.setOnEditorActionListener(new OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
+                if (i == EditorInfo.IME_ACTION_DONE)
+                {
+                    focusNothing.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getWindowToken(), 0);
+                }
+                return false;
+            }
+        });
+        setBackgroundResource(edittext);
+        setOnFocusChangeListener(new View.OnFocusChangeListener()
+        {
+            @Override
+            public void onFocusChange(View view, boolean b)
+            {
+                LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, edittext);
+                GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
+                if (b)
+                {
+                    shape.setStroke(4, Color.parseColor("#60C5FF"));
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(view, 0);
+                }
+                else
+                {
+                    shape.setStroke(4, Color.GRAY);
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+                setBackground(layers);
+            }
+        });
+        a.recycle();
+        setPadding(getPaddingLeft() / 2 + 10, getPaddingTop() / 2, getPaddingRight() / 2, getPaddingBottom() / 2);
+
+        left = new TagDrawable();
+
+        paint = getPaint();
+
+        if (prefix.length() != 0)
+            left.setText(prefix + " ");
+        else
+            left.setText(prefix);
+        setCompoundDrawablesRelative(left, null, null, null);
+        this.color = getCurrentTextColor();
     }
 
     public void setCursorColor(@ColorInt int color)
@@ -80,7 +199,8 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             field = editor.getClass().getDeclaredField("mCursorDrawable");
             field.setAccessible(true);
             field.set(editor, drawables);
-        } catch (Exception ignored)
+        }
+        catch (Exception ignored)
         {
         }
     }
@@ -129,57 +249,81 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
                     handleField.set(editor, drawable);
                 }
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
         }
     }
 
-    public MyEditText(final Context context)
+    public void setToFocusNothing(boolean focus)
     {
-        super(context);
-        mPrefix = "";
-        createFocusNothing(context);
-        this.setOnEditorActionListener(new OnEditorActionListener()
-        {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
-            {
-                if (i == EditorInfo.IME_ACTION_DONE)
-                {
-                    focusNothing.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                }
-                return false;
-            }
-        });
+        this.toFocusNothing = focus;
     }
 
-    public MyEditText(final Context context, AttributeSet attributeSet)
+    private void createFocusNothing(Context context)
     {
-        super(context, attributeSet);
-        createFocusNothing(context);
-        TypedArray a = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.MyEditText, 0, 0);
-        mPrefix = a.getString(R.styleable.MyEditText_prefix);
-        viewPartRef = a.getResourceId(R.styleable.MyEditText_parentLayout, -1);
-        if (mPrefix == null)
-            mPrefix = "";
-        this.setOnEditorActionListener(new OnEditorActionListener()
+        focusNothing = new LinearLayout(context);
+        focusNothing.setFocusable(true);
+        focusNothing.setFocusableInTouchMode(true);
+    }
+
+    public LinearLayout getFocusNothing()
+    {
+        return focusNothing;
+    }
+
+    @Override
+    public void setTextColor(int color)
+    {
+        super.setTextColor(color);
+        this.color = color;
+    }
+
+    @Override
+    public void setTypeface(Typeface typeface)
+    {
+        super.setTypeface(typeface);
+        if (paint != null)
         {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            paint.setTypeface(typeface);
+        }
+
+        postInvalidate();
+    }
+
+    public void setPrefix(String prefix)
+    {
+        if (prefix.length() != 0)
+            left.setText(prefix + " ");
+        else
+            left.setText(prefix);
+        setCompoundDrawablesRelative(left, null, null, null);
+    }
+
+    @Override
+    public void onDraw(Canvas c)
+    {
+        super.onDraw(c);
+        mLine0Baseline = getLineBounds(0, line0bounds);
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        if (viewPartRef != -1)
+        {
+            parentLayout = (ViewGroup) ((View) this.getParent()).findViewById(viewPartRef);
+            if (parentLayout != null)
             {
-                if (i == EditorInfo.IME_ACTION_DONE)
-                {
-                    focusNothing.requestFocus();
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                }
-                return false;
+                parentLayout.addView(focusNothing);
+                parentLayout.setFocusableInTouchMode(true);
+                parentLayout.setFocusable(true);
             }
-        });
-        a.recycle();
+            if (toFocusNothing)
+                focusNothing.requestFocus();
+        }
     }
 
     @Override
@@ -193,39 +337,55 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         return super.dispatchKeyEvent(event);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    private class TagDrawable extends Drawable
     {
-        getPaint().getTextBounds(mPrefix, 0, mPrefix.length(), mPrefixRect);
-        if (!mPrefix.matches(""))
-            mPrefixRect.right += getPaint().measureText("  "); // add some offset
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
 
-    @Override
-    protected void onDraw(Canvas canvas)
-    {
-        super.onDraw(canvas);
-        canvas.drawText(mPrefix, super.getCompoundPaddingLeft(), getBaseline(), getPaint());
-    }
-
-    @Override
-    public int getCompoundPaddingLeft()
-    {
-        return super.getCompoundPaddingLeft() + mPrefixRect.width();
-    }
-
-    @Override
-    protected void onAttachedToWindow()
-    {
-        super.onAttachedToWindow();
-        if (viewPartRef != -1)
+        public void setText(String s)
         {
-            parentLayout = (ViewGroup) ((View) this.getParent()).findViewById(viewPartRef);
-            if (parentLayout != null)
-                parentLayout.addView(focusNothing);
-            if (toFocusNothing)
-                focusNothing.requestFocus();
+            prefix = s;
+
+            setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight());
+
+            invalidateSelf();
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas)
+        {
+            if (editText.isEnabled())
+                paint.setColor(color);
+            else
+                paint.setColor(Color.GRAY);
+            canvas.drawText(prefix, 0, paint.getTextSize() - 5, paint);
+        }
+
+        @Override
+        public void setAlpha(int i)
+        {
+        }
+
+        @Override
+        public void setColorFilter(ColorFilter colorFilter)
+        {
+        }
+
+        @Override
+        public int getOpacity()
+        {
+            return PixelFormat.OPAQUE;
+        }
+
+        @Override
+        public int getIntrinsicHeight()
+        {
+            return (int) paint.getTextSize();
+        }
+
+        @Override
+        public int getIntrinsicWidth()
+        {
+            return (int) paint.measureText(prefix);
         }
     }
+
 }
