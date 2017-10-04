@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class PopupIdentification extends Popup
+public class PopupLogin extends Popup
 {
 
     public interface PopupListener
@@ -40,6 +40,10 @@ public class PopupIdentification extends Popup
 
     private PopupListener listener;
     private Context context;
+
+    private float errorTextSize = 18;
+    private int errorTextColor = Color.RED;
+    private boolean errorTextItalic = true;
 
     private void createLayout(final Context context, Display display)
     {
@@ -240,6 +244,7 @@ public class PopupIdentification extends Popup
                 listener.onForgot();
             }
         });
+        forgot.setTag("Forgot");
         problemLayout.addView(forgot);
 
         //          SET NOT REGISTERED
@@ -261,6 +266,7 @@ public class PopupIdentification extends Popup
                 listener.onRegister();
             }
         });
+        register.setTag("Register");
         problemLayout.addView(register);
 
 
@@ -274,6 +280,65 @@ public class PopupIdentification extends Popup
         generalLayout.addView(messageLayout);
     }
 
+    public void setProblemsTextSize(float size)
+    {
+        final TextView forgot = (TextView) messageLayout.findViewWithTag("Forgot");
+        final TextView register = (TextView) messageLayout.findViewWithTag("Register");
+        forgot.setTextSize(size);
+        register.setTextSize(size);
+    }
+
+    public void setProblemsTextSize(float forgotSize, float registerSize)
+    {
+        final TextView forgot = (TextView) messageLayout.findViewWithTag("Forgot");
+        final TextView register = (TextView) messageLayout.findViewWithTag("Register");
+        forgot.setTextSize(forgotSize);
+        register.setTextSize(registerSize);
+    }
+
+    public void setForgotText(CharSequence text)
+    {
+        final TextView forgot = (TextView) messageLayout.findViewWithTag("Forgot");
+        forgot.setText(text);
+    }
+
+    public void setRegisterText(CharSequence text)
+    {
+        final TextView register = (TextView) messageLayout.findViewWithTag("Register");
+        register.setText(text);
+    }
+
+    public void setProblemsTextColor(int color)
+    {
+        final TextView forgot = (TextView) messageLayout.findViewWithTag("Forgot");
+        final TextView register = (TextView) messageLayout.findViewWithTag("Register");
+        forgot.setTextColor(color);
+        register.setTextColor(color);
+    }
+
+    public void setProblemsTextColor(int forgotColor, int registerColor)
+    {
+        final TextView forgot = (TextView) messageLayout.findViewWithTag("Forgot");
+        final TextView register = (TextView) messageLayout.findViewWithTag("Register");
+        forgot.setTextColor(forgotColor);
+        register.setTextColor(registerColor);
+    }
+
+    public void setErrorTextSize(float size)
+    {
+        this.errorTextSize = size;
+    }
+
+    public void setErrorTextColor(int color)
+    {
+        this.errorTextColor = color;
+    }
+
+    public void setErrorTextItalic(boolean inItalic)
+    {
+        this.errorTextItalic = inItalic;
+    }
+
     private void setErrorMessage(CharSequence message)
     {
         final LinearLayout error = (LinearLayout) messageLayout.findViewWithTag("Error");
@@ -282,10 +347,11 @@ public class PopupIdentification extends Popup
             error.removeAllViews();
             TextView errorMessage = new TextView(context);
             errorMessage.setText(message);
-            errorMessage.setTextSize(18);
-            errorMessage.setTextColor(Color.RED);
+            errorMessage.setTextSize(errorTextSize);
+            errorMessage.setTextColor(errorTextColor);
             errorMessage.setGravity(Gravity.CENTER);
-            errorMessage.setTypeface(null, Typeface.ITALIC);
+            if (errorTextItalic)
+                errorMessage.setTypeface(null, Typeface.ITALIC);
 
             error.addView(errorMessage);
             Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake);
@@ -296,12 +362,6 @@ public class PopupIdentification extends Popup
             error.removeAllViews();
             closePopup();
         }
-    }
-
-    public void setDefaultInput(CharSequence defaultValue)
-    {
-        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
-        input.setText(defaultValue);
     }
 
     //      ACCEPT BUTTON SETTINGS
@@ -448,7 +508,7 @@ public class PopupIdentification extends Popup
         cancelButton.setBackgroundTintList(background);
     }
 
-    public PopupIdentification(@NonNull Activity activity, final PopupListener listener)
+    public PopupLogin(@NonNull Activity activity, final PopupListener listener)
     {
         super(activity.getWindow().getDecorView().getRootView());
         this.listener = listener;

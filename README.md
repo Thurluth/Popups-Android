@@ -46,11 +46,11 @@ This Popup display a text and an EditText where you can enter text.
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputString.png"/>
 
 
-## <br/>PopupIdentification
+## <br/>PopupLogin
 
 This Popup display a text and an EditText where you can enter a login and one where you can enter a password.
 
-<img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupIdentification.png"/>
+<img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupLogin.png"/>
 
 <br/>
 
@@ -70,7 +70,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.6.0' // THIS LINE
+    compile 'com.github.Thurluth:Popups-Android:1.6.1' // THIS LINE
 }
 ```
 
@@ -175,19 +175,65 @@ popup.setCancelBackgroundColorPressed(int colorPressed);
 ```
 popup.setCancelBackgroundColor(int colorNotPressed, int colorPressed);
 ```
-> Close popup by default
 
 ## <br/>PopupInput usage
 
-<br/>&rarr; Set default value in EditText (nothing if don't call) :
+<br/>&rarr; Set default value in EditText :
 ```
 popup.setDefaultInput(CharSequence defaultValue);
 ```
-> _Null_ by default
+> _null_ by default
 
-<br/>
+## <br/>PopupLogin usage
 
-## Different listeners
+<br/>&rarr; Set problems _(forgotten password / not register yet)_ text size :
+```
+popup.setProblemsTextSize(float size);
+``` 
+or
+``` 
+popup.setProblemsTextSize(float forgotSize, float registerSize);
+```
+
+<br/>&rarr; Set forgotten password text :
+```
+popup.setForgotText(CharSequence text);
+```
+> Set on _Forgot your password ?_ by default
+
+<br/>&rarr; Set register text :
+```
+popup.setRegisterText(CharSequence text);
+```
+> Set on _Not registered yet ?_ by default
+
+<br/>&rarr; Set problems text color :
+```
+popup.setProblemsTextColor(int color);
+``` 
+or
+``` 
+popup.setProblemsTextColor(int forgotColor, int registerColor);
+```
+
+<br/>&rarr; Set error message text size :
+```
+popup.setErrorTextSize(float size);
+```
+> Set on _18_ by default
+
+<br/>&rarr; Set error message text color :
+```
+popup.setErrorTextColor(int color);
+```
+
+<br/>&rarr; Set error message in italic or not :
+```
+popup.setErrorTextItalic(boolean inItalic);
+```
+> Set on _true_ by default
+
+##<br/>Different listeners
 
 <br/>&rarr; PopupMessage :
 
@@ -236,7 +282,7 @@ lister = new PopupBoolean.PopupListener()
 <br/>&rarr; PopupChoice :
 
 ```
-lister = new PopupChoice.ChoicesListener()
+lister = new PopupChoice.PopupListener()
 {
     @Override
     public String[] setChoices()
@@ -308,10 +354,10 @@ lister = new PopupInput.PopupListener()
 });
  ```
 
-<br/>&rarr; PopupIdentification :
+<br/>&rarr; PopupLogin :
 
 ```
-lister = new PopupIdentification.ChoicesListener()
+lister = new PopupLogin.PopupListener()
 {
     @Override
     public String onConfirm(String login, String password)
