@@ -1,6 +1,6 @@
 # Popups-Android [![](https://jitpack.io/v/Thurluth/Popups-Android.svg)](https://jitpack.io/#Thurluth/Popups-Android)
 
-Popups allows you to display some popups with simple lines of code
+Popups allow you to create simple popups with few lines of code
 <br/>
 _Minimum API : 23_
 
@@ -14,41 +14,41 @@ You also have custom _ScrollView_ / _EditText_ / _ViewPager_ in the library
 
 ## PopupMessage
 
-This Popup just display a simple message with a button to close the popup.
+This Popup just displays a simple message with a button to close the popup.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupMessage.png"/>
 
 ## <br/>PopupBoolean
 
-This Popup display a text with two buttons.
+This Popup displays a text with two buttons.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupBoolean.png"/>
 
 
 ## <br/>PopupChoice
 
-This Popup display a text and multiple clickable choices.
+This Popup displays a text and multiple clickable choices.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupChoice.png"/>
 
 
 ## <br/>PopupInputInt
 
-This Popup display a text and an EditText where you can enter number.
+This Popup displays a text and an EditText where you can enter number.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputInt.png"/>
 
 
 ## <br/>PopupInputString
 
-This Popup display a text and an EditText where you can enter text.
+This Popup displays a text and an EditText where you can enter text.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputString.png"/>
 
 
 ## <br/>PopupLogin
 
-This Popup display a text and an EditText where you can enter a login and one where you can enter a password.
+This Popup displays a text and an EditText where you can enter a login and one where you can enter a password.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupLogin.png"/>
 
