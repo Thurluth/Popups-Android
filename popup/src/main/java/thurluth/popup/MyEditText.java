@@ -33,8 +33,7 @@ import static thurluth.popup.R.drawable.edittext;
  * Created by Nathan on 02/10/2017.
  **/
 
-public class MyEditText extends android.support.v7.widget.AppCompatEditText
-{
+public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     TextPaint paint;
     TagDrawable left;
     LinearLayout focusNothing;
@@ -48,19 +47,15 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
     Rect line0bounds = new Rect();
     int mLine0Baseline;
 
-    public MyEditText(final Context context)
-    {
+    public MyEditText(final Context context) {
         super(context);
 
         createFocusNothing(context);
         prefix = "";
-        this.setOnEditorActionListener(new OnEditorActionListener()
-        {
+        this.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
-            {
-                if (i == EditorInfo.IME_ACTION_DONE)
-                {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getWindowToken(), 0);
@@ -69,21 +64,16 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             }
         });
         setBackgroundResource(edittext);
-        setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
+        setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b)
-            {
+            public void onFocusChange(View view, boolean b) {
                 LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, edittext);
                 GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
-                if (b)
-                {
+                if (b) {
                     shape.setStroke(4, Color.parseColor("#60C5FF"));
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(view, 0);
-                }
-                else
-                {
+                } else {
                     shape.setStroke(4, Color.GRAY);
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -105,8 +95,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         this.color = getCurrentTextColor();
     }
 
-    public MyEditText(final Context context, AttributeSet attrs)
-    {
+    public MyEditText(final Context context, AttributeSet attrs) {
         super(context, attrs);
 
         int cursorColor;
@@ -124,13 +113,10 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             setCursorColor(cursorColor);
         if (handlesColor != -1)
             setHandlesColors(handlesColor);
-        this.setOnEditorActionListener(new OnEditorActionListener()
-        {
+        this.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
-            {
-                if (i == EditorInfo.IME_ACTION_DONE)
-                {
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE) {
                     focusNothing.requestFocus();
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(getWindowToken(), 0);
@@ -139,21 +125,16 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             }
         });
         setBackgroundResource(edittext);
-        setOnFocusChangeListener(new View.OnFocusChangeListener()
-        {
+        setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean b)
-            {
+            public void onFocusChange(View view, boolean b) {
                 LayerDrawable layers = (LayerDrawable) ContextCompat.getDrawable(context, edittext);
                 GradientDrawable shape = (GradientDrawable) (layers.findDrawableByLayerId(R.id.edittext_line));
-                if (b)
-                {
+                if (b) {
                     shape.setStroke(4, Color.parseColor("#60C5FF"));
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(view, 0);
-                }
-                else
-                {
+                } else {
                     shape.setStroke(4, Color.GRAY);
                     InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -176,10 +157,8 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         this.color = getCurrentTextColor();
     }
 
-    public void setCursorColor(@ColorInt int color)
-    {
-        try
-        {
+    public void setCursorColor(@ColorInt int color) {
+        try {
             // Get the cursor resource id
             Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
             field.setAccessible(true);
@@ -200,18 +179,14 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             field.setAccessible(true);
             field.set(editor, drawables);
         }
-        catch (Exception ignored)
-        {
+        catch (Exception ignored) {
         }
     }
 
-    public void setHandlesColors(int color)
-    {
-        try
-        {
+    public void setHandlesColors(int color) {
+        try {
             Field editorField = TextView.class.getDeclaredField("mEditor");
-            if (!editorField.isAccessible())
-            {
+            if (!editorField.isAccessible()) {
                 editorField.setAccessible(true);
             }
 
@@ -221,79 +196,66 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
             String[] handleNames = {"mSelectHandleLeft", "mSelectHandleRight", "mSelectHandleCenter"};
             String[] resNames = {"mTextSelectHandleLeftRes", "mTextSelectHandleRightRes", "mTextSelectHandleRes"};
 
-            for (int i = 0; i < handleNames.length; i++)
-            {
+            for (int i = 0; i < handleNames.length; i++) {
                 Field handleField = editorClass.getDeclaredField(handleNames[i]);
-                if (!handleField.isAccessible())
-                {
+                if (!handleField.isAccessible()) {
                     handleField.setAccessible(true);
                 }
 
                 Drawable handleDrawable = (Drawable) handleField.get(editor);
 
-                if (handleDrawable == null)
-                {
+                if (handleDrawable == null) {
                     Field resField = TextView.class.getDeclaredField(resNames[i]);
-                    if (!resField.isAccessible())
-                    {
+                    if (!resField.isAccessible()) {
                         resField.setAccessible(true);
                     }
                     int resId = resField.getInt(this);
                     handleDrawable = this.getResources().getDrawable(resId, null);
                 }
 
-                if (handleDrawable != null)
-                {
+                if (handleDrawable != null) {
                     Drawable drawable = handleDrawable.mutate();
                     drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
                     handleField.set(editor, drawable);
                 }
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void setToFocusNothing(boolean focus)
-    {
+    public void setToFocusNothing(boolean focus) {
         this.toFocusNothing = focus;
     }
 
-    private void createFocusNothing(Context context)
-    {
+    private void createFocusNothing(Context context) {
         focusNothing = new LinearLayout(context);
         focusNothing.setFocusable(true);
         focusNothing.setFocusableInTouchMode(true);
     }
 
-    public LinearLayout getFocusNothing()
-    {
+    public LinearLayout getFocusNothing() {
         return focusNothing;
     }
 
     @Override
-    public void setTextColor(int color)
-    {
+    public void setTextColor(int color) {
         super.setTextColor(color);
         this.color = color;
     }
 
     @Override
-    public void setTypeface(Typeface typeface)
-    {
+    public void setTypeface(Typeface typeface) {
         super.setTypeface(typeface);
-        if (paint != null)
-        {
+        if (paint != null) {
             paint.setTypeface(typeface);
         }
 
         postInvalidate();
     }
 
-    public void setPrefix(String prefix)
-    {
+    public void setPrefix(String prefix) {
         if (prefix.length() != 0)
             left.setText(prefix + " ");
         else
@@ -302,21 +264,17 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
     }
 
     @Override
-    public void onDraw(Canvas c)
-    {
+    public void onDraw(Canvas c) {
         super.onDraw(c);
         mLine0Baseline = getLineBounds(0, line0bounds);
     }
 
     @Override
-    protected void onAttachedToWindow()
-    {
+    protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        if (viewPartRef != -1)
-        {
+        if (viewPartRef != -1) {
             parentLayout = (ViewGroup) ((View) this.getParent()).findViewById(viewPartRef);
-            if (parentLayout != null)
-            {
+            if (parentLayout != null) {
                 parentLayout.addView(focusNothing);
                 parentLayout.setFocusableInTouchMode(true);
                 parentLayout.setFocusable(true);
@@ -327,8 +285,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
     }
 
     @Override
-    public boolean onKeyPreIme(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP)
         {
             focusNothing.requestFocus();
@@ -337,11 +294,9 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         return super.dispatchKeyEvent(event);
     }
 
-    private class TagDrawable extends Drawable
-    {
+    private class TagDrawable extends Drawable {
 
-        public void setText(String s)
-        {
+        public void setText(String s) {
             prefix = s;
 
             setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight());
@@ -350,8 +305,7 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         }
 
         @Override
-        public void draw(@NonNull Canvas canvas)
-        {
+        public void draw(@NonNull Canvas canvas) {
             if (editText.isEnabled())
                 paint.setColor(color);
             else
@@ -360,30 +314,25 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText
         }
 
         @Override
-        public void setAlpha(int i)
-        {
+        public void setAlpha(int i) {
         }
 
         @Override
-        public void setColorFilter(ColorFilter colorFilter)
-        {
+        public void setColorFilter(ColorFilter colorFilter) {
         }
 
         @Override
-        public int getOpacity()
-        {
+        public int getOpacity() {
             return PixelFormat.OPAQUE;
         }
 
         @Override
-        public int getIntrinsicHeight()
-        {
+        public int getIntrinsicHeight() {
             return (int) paint.getTextSize();
         }
 
         @Override
-        public int getIntrinsicWidth()
-        {
+        public int getIntrinsicWidth() {
             return (int) paint.measureText(prefix);
         }
     }
