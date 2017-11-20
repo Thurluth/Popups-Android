@@ -70,7 +70,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.6.1' // THIS LINE
+    compile 'com.github.Thurluth:Popups-Android:1.6.2' // THIS LINE
 }
 ```
 
@@ -185,6 +185,21 @@ popup.setDefaultInput(CharSequence defaultValue);
 > _null_ by default
 
 ## <br/>PopupLogin usage
+
+<br/>&rarr; Set login input prefix :
+```
+popup.setLoginPrefix(String prefix);
+```
+
+<br/>&rarr; Set password input prefix :
+```
+popup.setPasswordPrefix(String prefix);
+```
+
+<br/>&rarr; Set both input prefix :
+```
+popup.setPrefixes(String loginPrefix, String passwordPrefix);
+```
 
 <br/>&rarr; Set problems _(forgotten password / not register yet)_ text size :
 ```

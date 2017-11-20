@@ -549,4 +549,24 @@ public class PopupLogin extends Popup
         MyEditText input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
         return input.getText().toString();
     }
+
+    public void setLoginPrefix(String prefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setPrefix(prefix);
+    }
+
+    public void setPasswordPrefix(String prefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        input.setPrefix(prefix);
+    }
+
+    public void setPrefixes(String loginPrefix, String passwordPrefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setPrefix(loginPrefix);
+        input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        input.setPrefix(passwordPrefix);
+    }
 }
