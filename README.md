@@ -70,7 +70,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.6.2' // THIS LINE
+    compile 'com.github.Thurluth:Popups-Android:1.6.3' // THIS LINE
 }
 ```
 
@@ -382,9 +382,9 @@ lister = new PopupLogin.PopupListener()
          *    BE EXECUTED WHEN ACCEPT
          *    BUTTON IS PRESSED
          *
-         *    RETURN "" OR null IF YOU WANT
-         *    TO CLOSE THE POPUP.
-         *    OTHERWISE RETURN AN ERROR MESSAGE
+         *    CALL A METHOD THAT CALL popup.closePopup()
+         *    TO CLOSE THE POPUP OR popup.setErrorMessage(CharSequence message)
+         *    TO DISPLAY AN ERROR MESSAGE
          */
     }
  
