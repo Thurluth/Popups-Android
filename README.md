@@ -1,6 +1,6 @@
 # Popups-Android [![](https://jitpack.io/v/Thurluth/Popups-Android.svg)](https://jitpack.io/#Thurluth/Popups-Android)
 
-Popups allows you to display some popups with simple lines of code
+Popups allow you to create simple popups with few lines of code
 <br/>
 _Minimum API : 23_
 
@@ -20,35 +20,35 @@ This Popup display a simple message with a button to close the popup.
 
 ## <br/>PopupBoolean
 
-This Popup display a text with two buttons.
+This Popup displays a text with two buttons.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupBoolean.png"/>
 
 
 ## <br/>PopupChoice
 
-This Popup display a text and multiple clickable choices.
+This Popup displays a text and multiple clickable choices.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupChoice.png"/>
 
 
 ## <br/>PopupInputInt
 
-This Popup display a text and an EditText where you can enter number.
+This Popup displays a text and an EditText where you can enter number.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputInt.png"/>
 
 
 ## <br/>PopupInputString
 
-This Popup display a text and an EditText where you can enter text.
+This Popup displays a text and an EditText where you can enter text.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupInputString.png"/>
 
 
 ## <br/>PopupLogin
 
-This Popup display a text and an EditText where you can enter a login and one where you can enter a password.
+This Popup displays a text and an EditText where you can enter a login and one where you can enter a password.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupLogin.png"/>
 
@@ -70,7 +70,7 @@ And add the dependency in your app build.gradle :
 
 ```
 dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.6.1' // THIS LINE
+    compile 'com.github.Thurluth:Popups-Android:1.6.3' // THIS LINE
 }
 ```
 
@@ -185,6 +185,21 @@ popup.setDefaultInput(CharSequence defaultValue);
 > _null_ by default
 
 ## <br/>PopupLogin usage
+
+<br/>&rarr; Set login input prefix :
+```
+popup.setLoginPrefix(String prefix);
+```
+
+<br/>&rarr; Set password input prefix :
+```
+popup.setPasswordPrefix(String prefix);
+```
+
+<br/>&rarr; Set both input prefix :
+```
+popup.setPrefixes(String loginPrefix, String passwordPrefix);
+```
 
 <br/>&rarr; Set problems _(forgotten password / not register yet)_ text size :
 ```
@@ -367,9 +382,9 @@ lister = new PopupLogin.PopupListener()
          *    BE EXECUTED WHEN ACCEPT
          *    BUTTON IS PRESSED
          *
-         *    RETURN "" OR null IF YOU WANT
-         *    TO CLOSE THE POPUP.
-         *    OTHERWISE RETURN AN ERROR MESSAGE
+         *    CALL A METHOD THAT CALL popup.closePopup()
+         *    TO CLOSE THE POPUP OR popup.setErrorMessage(CharSequence message)
+         *    TO DISPLAY AN ERROR MESSAGE
          */
     }
  
