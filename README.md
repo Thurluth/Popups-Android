@@ -14,7 +14,7 @@ You also have custom _ScrollView_ / _EditText_ / _ViewPager_ in the library
 
 ## PopupMessage
 
-This Popup just displays a simple message with a button to close the popup.
+This Popup display a simple message with a button to close the popup.
 
 <img src="https://raw.github.com/Thurluth/Popups-Android/master/sceenshot/PopupMessage.png"/>
 
