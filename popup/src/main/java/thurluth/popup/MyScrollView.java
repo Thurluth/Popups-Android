@@ -9,6 +9,7 @@ import android.widget.ScrollView;
  * Created by Nathan on 27/09/2017.
  **/
 
+//create my own implementation of ScrollView
 public class MyScrollView extends ScrollView
 {
 
