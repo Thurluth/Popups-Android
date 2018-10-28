@@ -29,7 +29,7 @@ public class PopupLogin extends Popup
 
     public interface PopupListener
     {
-        String onConfirm(String login, String password);
+        void onConfirm(String login, String password);
 
         void onCancel();
 
@@ -132,7 +132,7 @@ public class PopupLogin extends Popup
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
             {
                 passwordInput.getFocusNothing().requestFocus();
-                setErrorMessage(listener.onConfirm(getLoginValue(), getPasswordValue()));
+                listener.onConfirm(getLoginValue(), getPasswordValue());
                 return false;
             }
         });
@@ -170,7 +170,7 @@ public class PopupLogin extends Popup
             @Override
             public void onClick(View view)
             {
-                setErrorMessage(listener.onConfirm(getLoginValue(), getPasswordValue()));
+                listener.onConfirm(getLoginValue(), getPasswordValue());
             }
         });
         acceptButton.setTag("Confirm");
@@ -339,7 +339,7 @@ public class PopupLogin extends Popup
         this.errorTextItalic = inItalic;
     }
 
-    private void setErrorMessage(CharSequence message)
+    public void setErrorMessage(CharSequence message)
     {
         final LinearLayout error = (LinearLayout) messageLayout.findViewWithTag("Error");
         if (message != null && !message.toString().matches(""))
@@ -356,11 +356,6 @@ public class PopupLogin extends Popup
             error.addView(errorMessage);
             Animation shake = AnimationUtils.loadAnimation(context, R.anim.shake);
             error.startAnimation(shake);
-        }
-        else
-        {
-            error.removeAllViews();
-            closePopup();
         }
     }
 
@@ -548,5 +543,25 @@ public class PopupLogin extends Popup
     {
         MyEditText input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
         return input.getText().toString();
+    }
+
+    public void setLoginPrefix(String prefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setPrefix(prefix);
+    }
+
+    public void setPasswordPrefix(String prefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        input.setPrefix(prefix);
+    }
+
+    public void setPrefixes(String loginPrefix, String passwordPrefix)
+    {
+        MyEditText input = (MyEditText) messageLayout.findViewWithTag("LoginInput");
+        input.setPrefix(loginPrefix);
+        input = (MyEditText) messageLayout.findViewWithTag("PasswordInput");
+        input.setPrefix(passwordPrefix);
     }
 }
