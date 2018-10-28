@@ -33,6 +33,7 @@ import static thurluth.popup.R.drawable.edittext;
  * Created by Nathan on 02/10/2017.
  **/
 
+//create my own implementation of EditText
 public class MyEditText extends android.support.v7.widget.AppCompatEditText {
     TextPaint paint;
     TagDrawable left;
