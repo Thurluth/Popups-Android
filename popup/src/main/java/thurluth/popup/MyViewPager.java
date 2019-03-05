@@ -9,7 +9,7 @@ import android.view.MotionEvent;
  * Created by Nathan on 14/09/2017.
  **/
 
-//create my own implementation of viewPager
+//create my own implementation of ViewPager
 public class MyViewPager extends ViewPager
 {
     private boolean pageable;
