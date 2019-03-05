@@ -61,8 +61,11 @@ This Popup displays a text and an EditText where you can enter a login and one w
 Add this line in your project build.gradle at the end of repositories:
 
 ```
-repositories {
-    maven { url 'https://jitpack.io' } // THIS LINE
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' } // THIS LINE
+    }
 }
 ```
 
@@ -253,7 +256,7 @@ popup.setErrorTextItalic(boolean inItalic);
 <br/>&rarr; PopupMessage :
 
 ```
-lister = new PopupMessage.PopupListener()
+listener = new PopupMessage.PopupListener()
 {
     @Override
     public void onClosed()
@@ -270,7 +273,7 @@ lister = new PopupMessage.PopupListener()
 <br/>&rarr; PopupBoolean :
 
 ```
-lister = new PopupBoolean.PopupListener()
+listener = new PopupBoolean.PopupListener()
 {
     @Override
     public void onAccept()
@@ -297,7 +300,7 @@ lister = new PopupBoolean.PopupListener()
 <br/>&rarr; PopupChoice :
 
 ```
-lister = new PopupChoice.PopupListener()
+listener = new PopupChoice.PopupListener()
 {
     @Override
     public String[] setChoices()
@@ -345,7 +348,7 @@ lister = new PopupChoice.PopupListener()
 <br/>&rarr; PopupInput :
 
 ```
-lister = new PopupInput.PopupListener()
+listener = new PopupInput.PopupListener()
 {
     @Override
     public void onConfirm(Object value)
@@ -372,7 +375,7 @@ lister = new PopupInput.PopupListener()
 <br/>&rarr; PopupLogin :
 
 ```
-lister = new PopupLogin.PopupListener()
+listener = new PopupLogin.PopupListener()
 {
     @Override
     public String onConfirm(String login, String password)
