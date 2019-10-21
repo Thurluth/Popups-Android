@@ -10,6 +10,26 @@ You also have custom _ScrollView_ / _EditText_ / _ViewPager_ in the library
 
 <br/>
 
+# How to use it in your project ?
+
+Add this line in your project build.gradle at the end of repositories:
+
+```
+repositories {
+    maven { url 'https://jitpack.io' } // THIS LINE
+}
+```
+
+And add the dependency in your app build.gradle :
+
+```
+dependencies {
+    compile 'com.github.Thurluth:Popups-Android:1.6.3' // THIS LINE
+}
+```
+
+<br/>
+
 # Avaible Popups
 
 ## PopupMessage
@@ -55,24 +75,6 @@ This Popup displays a text and an EditText where you can enter a login and one w
 <br/>
 
 # USAGE
-
-## How to use it in your project ?
-
-Add this line in your project build.gradle at the end of repositories:
-
-```
-repositories {
-    maven { url 'https://jitpack.io' } // THIS LINE
-}
-```
-
-And add the dependency in your app build.gradle :
-
-```
-dependencies {
-    compile 'com.github.Thurluth:Popups-Android:1.6.3' // THIS LINE
-}
-```
 
 ## General usage
 
