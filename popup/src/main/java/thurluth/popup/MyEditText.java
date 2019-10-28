@@ -240,11 +240,11 @@ public class MyEditText extends android.support.v7.widget.AppCompatEditText {
         return focusNothing;
     }
 
-    @Override
+    /*@Override
     public void setTextColor(int color) {
         super.setTextColor(color);
         this.color = color;
-    }
+    }*/
 
     @Override
     public void setTypeface(Typeface typeface) {
